@@ -1,0 +1,332 @@
+@import "tailwindcss";
+
+:root {
+  --background: #070B14;
+  --foreground: #f0e6fc;
+  
+  /* Palette */
+  --color-neon-pink: #ff2a6d;
+  --color-neon-purple: #d300c5;
+  --color-neon-blue: #05d9e8;
+  --color-amber-gold: #f59e0b;
+  --color-deep-space: #070B14;
+  --color-soft-glass: rgba(255, 255, 255, 0.04);
+  --color-glass-border: rgba(255, 255, 255, 0.08);
+  
+  --font-sans: var(--font-sans, 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  --font-handwriting: var(--font-handwriting, 'Caveat', cursive);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* ========================================================
+     MATHEMATICAL MODULAR TYPOGRAPHY RATIO SYSTEM
+     Harmonic Scale Ratio: 1.250 (Major Third) / 1.333 (Perfect Fourth)
+     Fluid clamp scaling guarantees proportional optical balance 
+     from 320px mobile up to 2560px ultra-wide screens.
+     ======================================================== */
+  --type-2xs:  clamp(0.6875rem, 0.65rem + 0.15vw, 0.75rem);   /* 11px - 12px: Micro badges & captions */
+  --type-xs:   clamp(0.75rem, 0.71rem + 0.18vw, 0.8125rem);   /* 12px - 13px: Eyebrows, status, tags */
+  --type-sm:   clamp(0.875rem, 0.83rem + 0.22vw, 0.9375rem);  /* 14px - 15px: Compact UI, secondary body */
+  --type-base: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);      /* 16px - 17px: Primary body copy */
+  --type-lg:   clamp(1.125rem, 1.05rem + 0.35vw, 1.25rem);    /* 18px - 20px: Lead paragraphs, card titles */
+  --type-xl:   clamp(1.25rem, 1.15rem + 0.55vw, 1.5rem);      /* 20px - 24px: Subheadings, modal headers */
+  --type-2xl:  clamp(1.5rem, 1.32rem + 0.9vw, 1.875rem);      /* 24px - 30px: Section card titles, book headers */
+  --type-3xl:  clamp(1.875rem, 1.58rem + 1.45vw, 2.5rem);     /* 30px - 40px: Major section headings */
+  --type-4xl:  clamp(2.35rem, 1.95rem + 2.1vw, 3.375rem);     /* 37px - 54px: Primary page/hero headlines */
+  --type-5xl:  clamp(2.85rem, 2.3rem + 3.0vw, 4.5rem);        /* 45px - 72px: Flagship display titles */
+
+  /* Optical Letter-Spacing (Tracking) Standards */
+  --tracking-tighter: -0.035em;
+  --tracking-tight:   -0.022em;
+  --tracking-snug:    -0.012em;
+  --tracking-normal:   0em;
+  --tracking-wide:     0.04em;
+  --tracking-wider:    0.08em;
+  --tracking-widest:   0.16em;
+
+  /* Harmonic Leading (Line Heights) */
+  --leading-none:    1.02;
+  --leading-tight:   1.12;
+  --leading-snug:    1.25;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.68;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--color-neon-pink);
+  --color-secondary: var(--color-neon-purple);
+  --color-accent: var(--color-neon-blue);
+  
+  --font-sans: var(--font-sans);
+  --font-handwriting: var(--font-handwriting);
+  --font-mono: var(--font-mono);
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 3s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(211, 0, 197, 0.2); }
+    50% { box-shadow: 0 0 40px rgba(211, 0, 197, 0.6); }
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(211, 0, 197, 0.06) 0%, transparent 35%),
+    radial-gradient(circle at 85% 30%, rgba(5, 217, 232, 0.06) 0%, transparent 35%);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========================================================
+   TYPOGRAPHIC RATIO UTILITIES
+   Eliminates arbitrary vibe-coding font sizes with mathematically
+   proportioned hierarchy classes.
+   ======================================================== */
+.type-display {
+  font-size: var(--type-5xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tighter);
+  font-weight: 800;
+}
+
+.type-h1 {
+  font-size: var(--type-4xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tighter);
+  font-weight: 800;
+}
+
+.type-h2 {
+  font-size: var(--type-3xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 750;
+}
+
+.type-h3 {
+  font-size: var(--type-2xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-snug);
+  font-weight: 700;
+}
+
+.type-h4 {
+  font-size: var(--type-xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-snug);
+  font-weight: 650;
+}
+
+.type-lead {
+  font-size: var(--type-lg);
+  line-height: var(--leading-relaxed);
+  letter-spacing: var(--tracking-snug);
+  font-weight: 400;
+  color: rgba(240, 230, 252, 0.85);
+}
+
+.type-body {
+  font-size: var(--type-base);
+  line-height: var(--leading-relaxed);
+  letter-spacing: var(--tracking-normal);
+  font-weight: 400;
+}
+
+.type-body-sm {
+  font-size: var(--type-sm);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-normal);
+  font-weight: 400;
+}
+
+.type-eyebrow {
+  font-size: var(--type-xs);
+  line-height: 1.25;
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.type-caption {
+  font-size: var(--type-2xs);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-wide);
+  font-weight: 500;
+}
+
+.type-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums slashed-zero;
+}
+
+/* ========================================================
+   CLEVER ICONOGRAPHY DESIGN SYSTEM (Anti-Vibe-Coding)
+   Refined geometric housings, precision stroke ratios,
+   and contextual micro-lighting.
+   ======================================================== */
+.clever-icon-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.875rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.clever-icon-container:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.clever-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  font-size: var(--type-xs);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+}
+
+/* Full Content & Asset Protection */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  background: var(--color-soft-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-glass-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-panel {
+  background: rgba(13, 4, 21, 0.7);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #ff2a6d 0%, #d300c5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #ff2a6d 0%, #d300c5 100%);
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(211, 0, 197, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(211, 0, 197, 0.7);
+}
+
+/* Animations for Red Heart Reader */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInBottom {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-in {
+  animation-fill-mode: both;
+}
+
+.fade-in {
+  animation-name: fadeIn;
+}
+
+.slide-in-from-right {
+  animation-name: slideInRight;
+}
+
+.slide-in-from-bottom {
+  animation-name: slideInBottom;
+}
+
+.duration-300 {
+  animation-duration: 300ms;
+}
+
+.duration-500 {
+  animation-duration: 500ms;
+}
+
+/* Scrollbar hides */
+.scrollbar-hide::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide,
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 3D Book Transforms */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.transform-style-preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Gemini-style fluid wave shimmer */
+@keyframes geminiWave {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* DRM & Print Shield Protection */
+@media print {
+  html, body {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
