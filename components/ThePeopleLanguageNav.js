@@ -2,11 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, Menu, X, ArrowRight, User, BookOpen } from 'lucide-react';
+import { Search, Menu, X, ArrowRight, User, BookOpen, Sparkles } from 'lucide-react';
 
 export default function ThePeopleLanguageNav({ onGetStarted, onOpenSearch, onLogin }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +15,29 @@ export default function ThePeopleLanguageNav({ onGetStarted, onOpenSearch, onLog
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Check persistent login / Reader ID on this device
+  useEffect(() => {
+    const checkUser = () => {
+      try {
+        const stored = localStorage.getItem('peoplereading_user_data');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed?.email) {
+            setCurrentUser(parsed);
+          }
+        } else {
+          setCurrentUser(null);
+        }
+      } catch (e) {
+        // Silently handle parse errors
+      }
+    };
+
+    checkUser();
+    window.addEventListener('storage', checkUser);
+    return () => window.removeEventListener('storage', checkUser);
   }, []);
 
   return (
@@ -82,7 +106,7 @@ export default function ThePeopleLanguageNav({ onGetStarted, onOpenSearch, onLog
 
         {/* Right CTA Area */}
         <div className="hidden sm:flex items-center gap-3">
-          {/* Clever Search Button */}
+          {/* Search Button */}
           <button
             onClick={onOpenSearch}
             className="flex items-center gap-2 px-2.5 py-1.5 text-zinc-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 rounded-full transition-all cursor-pointer type-caption"
@@ -92,34 +116,59 @@ export default function ThePeopleLanguageNav({ onGetStarted, onOpenSearch, onLog
             <span className="text-[11px] font-mono text-zinc-500">Search</span>
           </button>
 
-          {/* Log In (pill border) */}
-          <button
-            onClick={onLogin}
-            className="px-4 py-1.5 rounded-full border border-white/20 type-caption font-bold text-white hover:bg-white/10 transition-all cursor-pointer"
-          >
-            Log In
-          </button>
+          {/* Auto-Recognized Reader Profile or Login */}
+          {currentUser ? (
+            <Link
+              href="/reader"
+              className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-white type-caption font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.15)] group"
+              title={`Reader ID: ${currentUser.userId || 'PR-ACTIVE'} • Click to open your library`}
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="font-mono text-amber-300 text-[11px] font-bold">{currentUser.userId || 'READER'}</span>
+              <span className="text-white font-black">{currentUser.name}</span>
+              <BookOpen className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
+            </Link>
+          ) : (
+            <button
+              onClick={onLogin}
+              className="px-4 py-1.5 rounded-full border border-white/20 type-caption font-bold text-white hover:bg-white/10 transition-all cursor-pointer"
+            >
+              Log In
+            </button>
+          )}
 
           {/* Get Started (amber pill) */}
           <button
             onClick={onGetStarted}
-            className="px-5 py-1.5 rounded-full bg-[#F59E0B] hover:bg-amber-400 text-black type-caption font-black shadow-[0_2px_14px_rgba(245,158,11,0.35)] active:scale-95 transition-all cursor-pointer"
+            className="px-5 py-1.5 rounded-full bg-[#F59E0B] hover:bg-amber-400 text-black type-caption font-black shadow-[0_2px_14px_rgba(245,158,11,0.35)] active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
           >
-            Get Started
+            <Sparkles className="w-3.5 h-3.5 text-black" />
+            <span>Get Started</span>
           </button>
         </div>
 
         {/* Mobile menu trigger */}
         <div className="flex sm:hidden items-center gap-2">
+          {currentUser && (
+            <Link
+              href="/reader"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-xs text-white font-bold"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="max-w-[70px] truncate">{currentUser.name}</span>
+            </Link>
+          )}
           <button
             onClick={onOpenSearch}
             className="p-2 text-zinc-300 hover:text-white"
+            aria-label="Search"
           >
             <Search className="w-4 h-4" />
           </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 text-zinc-300 hover:text-white"
+            aria-label="Toggle Menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -130,6 +179,28 @@ export default function ThePeopleLanguageNav({ onGetStarted, onOpenSearch, onLog
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="sm:hidden bg-[#080D1A] border-b border-white/10 px-4 py-5 space-y-4 animate-in slide-in-from-top duration-200">
+          
+          {currentUser && (
+            <div className="p-3.5 rounded-2xl bg-[#141a26] border border-amber-400/30 flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span className="text-[11px] font-mono text-amber-300 font-bold">
+                    {currentUser.userId || 'PR-ACTIVE'}
+                  </span>
+                </div>
+                <span className="text-sm font-black text-white block mt-0.5">{currentUser.name}</span>
+              </div>
+              <Link
+                href="/reader"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 text-black text-xs font-black shadow-md"
+              >
+                Open Reader
+              </Link>
+            </div>
+          )}
+
           <div className="flex flex-col gap-3 font-semibold text-sm">
             <a
               href="#home"
@@ -177,21 +248,31 @@ export default function ThePeopleLanguageNav({ onGetStarted, onOpenSearch, onLog
           </div>
 
           <div className="pt-3 border-t border-white/10 flex items-center gap-2">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                if (onLogin) onLogin();
-              }}
-              className="flex-1 py-2 rounded-full border border-white/20 text-xs font-bold text-white text-center"
-            >
-              Log In
-            </button>
+            {!currentUser ? (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  if (onLogin) onLogin();
+                }}
+                className="flex-1 py-2.5 rounded-full border border-white/20 text-xs font-bold text-white text-center"
+              >
+                Log In
+              </button>
+            ) : (
+              <Link
+                href="/reader"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex-1 py-2.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-xs font-bold text-emerald-300 text-center"
+              >
+                Continue Reading
+              </Link>
+            )}
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 if (onGetStarted) onGetStarted();
               }}
-              className="flex-1 py-2 rounded-full bg-[#F59E0B] text-black text-xs font-bold text-center"
+              className="flex-1 py-2.5 rounded-full bg-[#F59E0B] text-black text-xs font-black text-center"
             >
               Get Started
             </button>

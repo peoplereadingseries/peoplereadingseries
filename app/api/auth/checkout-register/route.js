@@ -10,7 +10,7 @@ const ALL_5_BOOKS = [
 
 export async function POST(req) {
   try {
-    const { email, name, bookId, isBundle, deviceId, deviceInfo } = await req.json();
+    const { email, name, phone, bookId, isBundle, deviceId, deviceInfo } = await req.json();
 
     if (!email || !email.includes('@')) {
       return Response.json({ error: 'Valid email required' }, { status: 400 });
@@ -29,6 +29,7 @@ export async function POST(req) {
     const { user, sessionToken } = await registerOrUpdateUser({
       email,
       name: name || 'Reader',
+      phone: phone || '',
       booksToAdd: booksToGrant,
       deviceId: deviceId || `dev_${Date.now()}`,
       deviceInfo: deviceInfo || 'Purchasing Device',
@@ -39,8 +40,10 @@ export async function POST(req) {
       message: 'Account registered and books unlocked successfully!',
       sessionToken,
       user: {
+        userId: user.userId,
         email: user.email,
         name: user.name,
+        phone: user.phone,
         purchasedBooks: user.purchasedBooks,
         activeDeviceInfo: user.activeDeviceInfo,
       },

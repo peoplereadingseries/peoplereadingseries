@@ -27,6 +27,21 @@
       "name": "Firebase Reader",
       "email": "firebasetest_1794736058085@peoplereadingseries.com",
       "createdAt": "2026-11-15T09:47:38.458Z"
+    },
+    "checkout_user_1794741383033@peoplereadingseries.com": {
+      "userId": "PR-380943",
+      "phone": "+91 9876543210",
+      "lastActiveAt": "2026-11-15T11:16:25.235Z",
+      "createdAt": "2026-11-15T11:16:23.829Z",
+      "activeDeviceId": "android_samsung",
+      "name": "Priya Sharma",
+      "purchasedBooks": [
+        "the-charmer",
+        "the-leader"
+      ],
+      "activeSessionToken": "sess_96d328c07dc5fa3021daa08fc947ef887f183ea954b73198",
+      "activeDeviceInfo": "Samsung Galaxy S24",
+      "email": "checkout_user_1794741383033@peoplereadingseries.com"
     }
   }
 }

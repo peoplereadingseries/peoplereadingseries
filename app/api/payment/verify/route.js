@@ -36,7 +36,7 @@ export async function POST(req) {
       }
     }
 
-    const { email, name } = userDetails || {};
+    const { email, name, phone } = userDetails || {};
 
     if (!email) {
       return Response.json({ error: 'User email is required' }, { status: 400 });
@@ -56,6 +56,7 @@ export async function POST(req) {
     const { user, sessionToken } = await registerOrUpdateUser({
       email,
       name: name || 'Reader',
+      phone: phone || '',
       booksToAdd: booksToGrant,
       deviceId: deviceId || `dev_${Date.now()}`,
       deviceInfo: deviceInfo || 'Purchasing Device',
@@ -66,8 +67,10 @@ export async function POST(req) {
       orderId: razorpayPaymentId || `order_${Date.now()}`,
       sessionToken,
       user: {
+        userId: user.userId,
         email: user.email,
         name: user.name,
+        phone: user.phone,
         purchasedBooks: user.purchasedBooks,
         activeDeviceInfo: user.activeDeviceInfo,
       },

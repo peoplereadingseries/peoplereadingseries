@@ -8,6 +8,7 @@ import { useLanguage } from '../context/LanguageContext';
 export default function Navbar({ onBuyBundle }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   const { language, setLanguage } = useLanguage();
 
   useEffect(() => {
@@ -16,6 +17,16 @@ export default function Navbar({ onBuyBundle }) {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('peoplereading_user_data');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.email) setCurrentUser(parsed);
+      }
+    } catch (e) {}
   }, []);
 
   return (
@@ -56,18 +67,29 @@ export default function Navbar({ onBuyBundle }) {
             Psychology
           </a>
           <Link
-            href="/siya"
-            className="text-rose-400 hover:text-rose-300 transition-colors flex items-center gap-1"
+            href="/reader"
+            className="text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1"
           >
-            <span>Siya</span>
-            <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30">
-              Live
-            </span>
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>Web Reader</span>
           </Link>
         </div>
 
-        {/* Right Action: Language Switcher + CTA Button */}
+        {/* Right Action: Language Switcher + User Profile / CTA */}
         <div className="hidden sm:flex items-center gap-3">
+          {/* User Reader Badge if registered */}
+          {currentUser ? (
+            <Link
+              href="/reader"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20 text-xs font-bold transition-all"
+              title={`Logged in as ${currentUser.name}`}
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="text-white">{currentUser.name}</span>
+              <span className="text-[10px] font-mono text-amber-300">({currentUser.userId || 'ID'})</span>
+            </Link>
+          ) : null}
+
           {/* Compact Language Toggle */}
           <div className="bg-white/5 border border-white/10 rounded-full p-0.5 flex text-[10px] font-semibold text-zinc-400">
             {['English', 'Tamil', 'Tanglish'].map((lang) => (
@@ -98,53 +120,72 @@ export default function Navbar({ onBuyBundle }) {
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="md:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white"
+          aria-label="Toggle Menu"
         >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
-
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#0d0d12] border-b border-white/10 px-6 py-5 space-y-4 text-sm font-semibold animate-in slide-in-from-top-2 duration-200">
-          <a
-            href="#books"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-300 hover:text-white"
-          >
-            The 5 Books
-          </a>
-          <a
-            href="#quiz"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-amber-400"
-          >
-            Diagnostic Quiz (Which Book?)
-          </a>
-          <a
-            href="#bundle"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-zinc-300 hover:text-white"
-          >
-            Complete 5-Book Boxset (₹999)
-          </a>
-          <Link
-            href="/siya"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-rose-400"
-          >
-            Siya Heart Reader Companion
-          </Link>
+        <div className="md:hidden bg-black/95 border-b border-white/10 px-4 py-4 space-y-3">
+          {currentUser && (
+            <div className="p-3 rounded-xl bg-[#141a26] border border-amber-400/30 flex items-center justify-between">
+              <div>
+                <span className="text-[10px] font-mono text-amber-300 block">{currentUser.userId || 'PR-ACTIVE'}</span>
+                <span className="text-sm font-bold text-white">{currentUser.name}</span>
+              </div>
+              <Link
+                href="/reader"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-1 rounded-full bg-amber-400 text-black text-xs font-bold"
+              >
+                Open Reader
+              </Link>
+            </div>
+          )}
 
-          <div className="pt-2">
+          <div className="flex flex-col gap-2.5 text-sm font-semibold text-zinc-300">
+            <a href="#books" onClick={() => setMobileMenuOpen(false)} className="hover:text-white">
+              The 5 Books
+            </a>
+            <a href="#quiz" onClick={() => setMobileMenuOpen(false)} className="text-amber-400">
+              Which Book to Read First?
+            </a>
+            <a href="#bundle" onClick={() => setMobileMenuOpen(false)} className="hover:text-white">
+              Complete Boxset (₹999)
+            </a>
+            <a href="#science" onClick={() => setMobileMenuOpen(false)} className="hover:text-white">
+              Science & Psychology
+            </a>
+            <Link href="/reader" onClick={() => setMobileMenuOpen(false)} className="text-amber-400 font-bold">
+              Web Reader Portal
+            </Link>
+          </div>
+
+          <div className="pt-2 border-t border-white/10 flex items-center justify-between">
+            <div className="bg-white/5 border border-white/10 rounded-full p-0.5 flex text-xs">
+              {['English', 'Tamil', 'Tanglish'].map((lang) => (
+                <button
+                  key={lang}
+                  onClick={() => setLanguage(lang)}
+                  className={`px-2 py-0.5 rounded-full ${
+                    language === lang ? 'bg-white text-black font-bold' : 'text-zinc-400'
+                  }`}
+                >
+                  {lang === 'English' ? 'EN' : lang === 'Tamil' ? 'தமிழ்' : 'Tang'}
+                </button>
+              ))}
+            </div>
+
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onBuyBundle();
               }}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-black text-xs flex items-center justify-center gap-2"
+              className="px-4 py-1.5 rounded-full bg-amber-400 text-black text-xs font-bold"
             >
-              <span>Get All 5 Books (₹999)</span>
+              Get All 5 (₹999)
             </button>
           </div>
         </div>

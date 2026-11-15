@@ -2,7 +2,7 @@ import { loginAndClaimSession } from '../../../../lib/authDb';
 
 export async function POST(req) {
   try {
-    const { email, name, deviceId, deviceInfo } = await req.json();
+    const { email, name, phone, deviceId, deviceInfo } = await req.json();
 
     if (!email) {
       return Response.json({ error: 'Email required' }, { status: 400 });
@@ -12,6 +12,7 @@ export async function POST(req) {
     const { user, sessionToken } = await loginAndClaimSession({
       email,
       name,
+      phone: phone || '',
       deviceId,
       deviceInfo: deviceInfo || 'Reclaimed Device',
     });
@@ -21,8 +22,10 @@ export async function POST(req) {
       message: 'Active session transferred to this device successfully.',
       sessionToken,
       user: {
+        userId: user.userId,
         email: user.email,
         name: user.name,
+        phone: user.phone,
         purchasedBooks: user.purchasedBooks,
         activeDeviceInfo: user.activeDeviceInfo,
       },

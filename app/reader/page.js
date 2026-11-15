@@ -823,13 +823,25 @@ export default function ReaderPage() {
             </div>
 
             {/* Authenticated user footer with exit link */}
-            <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
-              <div className="text-[11px] text-zinc-500 font-mono truncate">
-                User: {user.email}
+            <div className="pt-3 border-t border-white/10 flex flex-col gap-1.5">
+              <div className="flex items-center justify-between text-[11px]">
+                <span className="text-zinc-500 font-mono">READER ID:</span>
+                <span className="text-amber-300 font-mono font-bold">{user.userId || 'PR-ACTIVE'}</span>
               </div>
+              <div className="text-xs text-white font-bold truncate">
+                {user.name}
+              </div>
+              <div className="text-[11px] text-zinc-400 font-mono truncate">
+                {user.email}
+              </div>
+              {user.phone && (
+                <div className="text-[11px] text-zinc-500 font-mono">
+                  {user.phone}
+                </div>
+              )}
               <Link
                 href="/"
-                className="text-xs text-zinc-400 hover:text-white flex items-center gap-1.5 pt-1 transition-colors"
+                className="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1.5 pt-1.5 transition-colors font-medium"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Return to Homepage</span>
