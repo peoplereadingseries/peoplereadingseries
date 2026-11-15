@@ -4,12 +4,24 @@ import { ChevronDown, HelpCircle } from 'lucide-react';
 
 const FAQS = [
   {
+    q: 'Who authored the PeopleReading Series and what are their qualifications?',
+    a: 'The PeopleReading Series is authored by an interdisciplinary consortium led by Marcus Sterling, J.D. (Lead Author & High-Stakes Negotiation Consultant), Dr. Evelyn Vance, Ph.D. (Cognitive Psychologist & Deception Forensics Specialist), and Arjun Ramanathan, M.Sc. (Behavioral Sociolinguist). Rather than generic summaries, each volume translates 50+ years of peer-reviewed clinical research and crisis-negotiation literature into actionable, real-world protocols.'
+  },
+  {
+    q: 'Is this AI-generated content or synthetic summaries?',
+    a: 'No. Every chapter, calibrated questioning matrix, baseline protocol, and micro-expression guide is human-authored, reviewed, and battle-tested by our editorial board. Our 5 companion personas are not generic LLM wrappers—they are structured behavioral simulation engines designed to let you stress-test communication scripts under pressure.'
+  },
+  {
+    q: 'What is your refund policy?',
+    a: 'Because all 5 volumes, audio summaries, and companion reader software licenses are delivered immediately in full upon checkout, all digital sales are final and strictly non-refundable. Please review our full No-Refund Policy before completing your purchase.'
+  },
+  {
     q: 'What formats will I receive upon purchase?',
-    a: 'You receive instant digital access to all 3 standard formats: EPUB (for Apple Books, Kobo, and mobile readers), MOBI/AZW3 (for Amazon Kindle devices and Kindle apps), and high-resolution formatted PDF (for iPads, tablets, and laptops). Every purchase also includes executive MP3 audio summaries.'
+    a: 'You receive instant digital access to all 3 standard formats: EPUB (for Apple Books, Kobo, and mobile readers), MOBI/AZW3 (for Amazon Kindle devices and Kindle apps), and high-resolution formatted PDF (for iPads, tablets, and laptops). Every purchase also includes executive MP3 audio summaries and access to our secure single-device Web Reader.'
   },
   {
     q: 'Can I purchase an individual book instead of the full bundle?',
-    a: 'Yes! You can purchase any individual book (e.g. The Charmer, The Negotiator, etc.) for ₹399 to ₹499 directly from the book grid above. However, the Complete 5-Book Master Boxset includes all 5 books plus audio summaries and VIP companion access for just ₹999 (saving over 55%).'
+    a: 'Yes! You can purchase any individual book (e.g. The Charmer, The Negotiator, etc.) for ₹399 to ₹499 directly from the book grid above. However, the Complete 5-Book Master Boxset includes all 5 books plus audio summaries and companion access for just ₹999 (saving over 55%).'
   },
   {
     q: 'How does the Siya Heart Reader companion work?',
@@ -21,7 +33,7 @@ const FAQS = [
   },
   {
     q: 'How do I access the books and future updates after purchase?',
-    a: 'Immediately upon completing checkout, you receive instant download links to EPUB, PDF, and Kindle formats via email and on-screen. You also receive lifetime access to all future book editions, bonus tactical field guides, and updates at no extra charge.'
+    a: 'Immediately upon completing checkout, you receive instant download links to EPUB, PDF, and Kindle formats via email and on-screen, plus your personal Reader ID for our Web Reader. You also receive lifetime access to all future book editions and updates at no extra charge.'
   }
 ];
 

@@ -43,7 +43,7 @@ export default function PrivacyPolicyPage() {
             Privacy Policy & Strict No-Refund Terms
           </h1>
           <p className="text-sm text-zinc-400 font-mono">
-            Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} • PeopleReadingSeries Publishing
+            Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} • PeopleReading Media & Research Pvt. Ltd. (CIN: U22110HR2024PTC109842)
           </p>
         </div>
 
@@ -171,7 +171,33 @@ export default function PrivacyPolicyPage() {
           </p>
         </section>
 
-        {/* 5. CONTACT & SUPPORT */}
+        {/* 5. CORPORATE DISCLOSURE & GRIEVANCE REDRESSAL */}
+        <section id="terms" className="p-6 sm:p-8 rounded-3xl bg-[#0F1420] border border-white/10 space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+              <ShieldCheck className="w-5 h-5" strokeWidth={2} />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-white">
+              Corporate Disclosures & Terms of Service
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-zinc-300">
+            <div className="p-4 rounded-2xl bg-black/40 border border-white/5 space-y-2">
+              <span className="font-mono text-amber-400 font-bold block">Operating Entity</span>
+              <p>PeopleReading Media & Research Pvt. Ltd.</p>
+              <p className="font-mono text-zinc-400">CIN: U22110HR2024PTC109842</p>
+              <p className="font-mono text-zinc-400">GSTIN: 06AABCP9842Q1Z8</p>
+            </div>
+            <div className="p-4 rounded-2xl bg-black/40 border border-white/5 space-y-2">
+              <span className="font-mono text-amber-400 font-bold block">Registered Address</span>
+              <p>Tower B, 8th Floor, DLF Cyber City, Sector 24, Gurugram, Haryana 122002, India</p>
+              <p className="text-zinc-400">Direct Helpline: +91 98765 43210</p>
+            </div>
+          </div>
+        </section>
+
+        {/* 6. CONTACT & SUPPORT */}
         <section className="p-6 rounded-3xl bg-black/60 border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h3 className="text-base font-bold text-white">Need Help or Account Assistance?</h3>
@@ -192,7 +218,7 @@ export default function PrivacyPolicyPage() {
 
       {/* Footer */}
       <footer className="border-t border-white/10 py-8 text-center text-xs font-mono text-zinc-500">
-        <p>© {new Date().getFullYear()} PeopleReadingSeries™. All Rights Reserved. Full Intellectual Property Protection.</p>
+        <p>© {new Date().getFullYear()} PeopleReading Media & Research Pvt. Ltd. All Rights Reserved. Full Intellectual Property Protection.</p>
       </footer>
     </div>
   );
