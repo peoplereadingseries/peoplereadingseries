@@ -57,67 +57,72 @@ const TESTIMONIALS = [
 
 export default function Testimonials5Books() {
   return (
-    <section id="reviews" className="py-24 sm:py-28 px-4 sm:px-6 relative overflow-hidden bg-black text-white">
+    <section id="reviews" className="py-24 sm:py-32 px-4 sm:px-6 relative overflow-hidden bg-[#04060b] text-white border-t border-white/[0.08]">
       <div className="max-w-6xl mx-auto relative z-10">
         
-        {/* Section Header with Grounded, Auditable Metrics */}
-        <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 mb-4 backdrop-blur-md">
-            <MessageSquareQuote className="w-3.5 h-3.5 text-amber-400" strokeWidth={2} />
-            <span className="type-eyebrow font-mono text-zinc-300">Auditable Reader Feedback</span>
+        {/* Section Header - Pro Coder Minimalist Metric */}
+        <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-20 space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-amber-300 text-xs font-mono tracking-wider uppercase">
+            <MessageSquareQuote className="w-3.5 h-3.5 text-amber-400" />
+            <span>Verified Reader Telemetry</span>
           </div>
 
-          <h2 className="type-h2 font-black text-white tracking-tight text-balance">
-            1,420+ Verified Reader Licenses Across 14 Countries
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight text-balance">
+            1,420+ Verified Readers Across 14 Countries
           </h2>
 
-          <p className="type-body text-zinc-400 mt-3 leading-relaxed">
-            Authentic feedback from our 2026 launch cohort. Every review is tied to an active, registered Reader ID verified post-purchase.
+          <p className="text-sm sm:text-base text-zinc-400 leading-relaxed">
+            Authentic field reports from our 2026 launch cohort. Every testimonial corresponds to an authenticated Reader ID registered post-purchase.
           </p>
 
-          {/* Social Proof Trust Bar */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-zinc-400">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300">
-              <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
-              <span>4.9 / 5.0 Average Satisfaction</span>
-            </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-zinc-300">
-              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-              <span>TrustScore Verified Cohort</span>
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-zinc-500 pt-2">
+            <span className="flex items-center gap-1.5 text-emerald-400">
+              <CheckCircle className="w-3.5 h-3.5" />
+              <span>4.9 / 5.0 Average Rating</span>
+            </span>
+            <span>•</span>
+            <span className="text-zinc-300">Verified Razorpay Cohort</span>
+            <span>•</span>
             <a
               href="https://reddit.com/r/PeopleReadingSeries"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-zinc-300 hover:text-amber-400 transition-colors"
+              className="text-zinc-400 hover:text-amber-400 transition-colors flex items-center gap-1 underline underline-offset-4 decoration-zinc-700"
             >
-              <span>Discussions on r/PeopleReadingSeries</span>
-              <ExternalLink className="w-3 h-3 opacity-60" />
+              <span>r/PeopleReadingSeries</span>
+              <ExternalLink className="w-3 h-3" />
             </a>
           </div>
         </div>
 
-        {/* 5 Testimonial Cards */}
+        {/* 5 Testimonial Cards - Sleek Dark Obsidian Glass */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
           {TESTIMONIALS.map((item, idx) => (
             <div
               key={idx}
-              className={`p-6 sm:p-7 rounded-2xl bg-[#0c0c11] border border-white/10 hover:border-white/20 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 ${
+              className={`p-7 rounded-2xl bg-[#090d18]/80 border border-white/[0.08] hover:border-white/20 flex flex-col justify-between transition-all duration-300 group hover:-translate-y-1 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden ${
                 idx === 4 ? 'md:col-span-2 lg:col-span-1' : ''
               }`}
             >
+              {/* Subtle top hairline */}
+              <div
+                className="absolute top-0 inset-x-0 h-px opacity-40 transition-opacity group-hover:opacity-100"
+                style={{
+                  background: `linear-gradient(90deg, transparent, ${item.themeColor}, transparent)`
+                }}
+              />
+
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <span
-                    className="type-caption font-mono font-bold px-3 py-1 rounded-full border uppercase"
-                    style={{
-                      color: item.themeColor,
-                      borderColor: `${item.themeColor}40`,
-                      backgroundColor: `${item.themeColor}12`
-                    }}
-                  >
-                    {item.book}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{ backgroundColor: item.themeColor }}
+                    />
+                    <span className="text-xs font-mono font-bold tracking-wider uppercase text-zinc-300">
+                      {item.book}
+                    </span>
+                  </div>
                   <div className="flex gap-0.5 text-amber-400">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
@@ -125,20 +130,20 @@ export default function Testimonials5Books() {
                   </div>
                 </div>
 
-                <Quote className="w-5 h-5 text-zinc-600 mb-2.5" />
-                <p className="type-body-sm text-zinc-300 leading-relaxed font-normal">
+                <Quote className="w-4 h-4 text-zinc-600 mb-2.5" />
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal">
                   &ldquo;{item.quote}&rdquo;
                 </p>
               </div>
 
-              <div className="pt-4 mt-5 border-t border-white/5 flex items-center justify-between">
+              <div className="pt-4 mt-6 border-t border-white/[0.06] flex items-center justify-between">
                 <div>
-                  <h4 className="type-body-sm font-bold text-white">{item.author}</h4>
-                  <p className="type-caption font-mono text-zinc-400">{item.role} • {item.location}</p>
+                  <h4 className="text-xs sm:text-sm font-bold text-white">{item.author}</h4>
+                  <p className="text-[11px] font-mono text-zinc-500">{item.role} • {item.location}</p>
                 </div>
                 <div className="text-right">
-                  <div className="flex items-center gap-1.5 type-caption font-mono text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-500/20 mb-1">
-                    <ShieldCheck className="w-3 h-3" strokeWidth={2} />
+                  <div className="flex items-center gap-1 text-[11px] font-mono text-emerald-400 font-semibold mb-0.5">
+                    <ShieldCheck className="w-3 h-3" />
                     <span>Verified</span>
                   </div>
                   <span className="text-[10px] font-mono text-zinc-500 block">{item.readerId}</span>

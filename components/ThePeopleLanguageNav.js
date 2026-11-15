@@ -131,16 +131,16 @@ export default function ThePeopleLanguageNav({ onGetStarted, onOpenSearch, onLog
           ) : (
             <button
               onClick={onLogin}
-              className="px-4 py-1.5 rounded-full border border-white/20 type-caption font-bold text-white hover:bg-white/10 transition-all cursor-pointer"
+              className="px-4 py-2 rounded-full border border-white/15 bg-white/[0.03] hover:bg-white/[0.08] text-xs font-bold text-zinc-200 hover:text-white transition-all cursor-pointer"
             >
               Log In
             </button>
           )}
 
-          {/* Get Started (amber pill) */}
+          {/* Get Started (pro-coder satin pill) */}
           <button
             onClick={onGetStarted}
-            className="px-5 py-1.5 rounded-full bg-[#F59E0B] hover:bg-amber-400 text-black type-caption font-black shadow-[0_2px_14px_rgba(245,158,11,0.35)] active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
+            className="px-5 py-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:brightness-110 text-black text-xs font-black shadow-[0_2px_16px_rgba(245,158,11,0.35),inset_0_1px_0_rgba(255,255,255,0.4)] active:scale-95 transition-all cursor-pointer flex items-center gap-1.5"
           >
             <Sparkles className="w-3.5 h-3.5 text-black" />
             <span>Get Started</span>

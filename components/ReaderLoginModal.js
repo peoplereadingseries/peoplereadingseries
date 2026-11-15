@@ -178,7 +178,7 @@ export default function ReaderLoginModal({ isOpen, onClose }) {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3.5 px-4 rounded-xl font-black text-sm bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black shadow-lg transition-all active:scale-98 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              className="w-full py-3.5 px-4 rounded-xl font-black text-sm bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:brightness-110 text-black shadow-[0_10px_30px_rgba(245,158,11,0.35),inset_0_1px_0_rgba(255,255,255,0.4)] transition-all active:scale-98 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               <BookOpen className="w-4 h-4 text-black" strokeWidth={2.5} />
               <span>{isLoading ? 'Activating Device...' : 'Claim Device & Open Reader'}</span>

@@ -204,21 +204,21 @@ export default function CharacterStage({
             </p>
           )}
 
-          {/* Let's Talk Conversational Trigger - Vivid, high-contrast, bright */}
+          {/* Let's Talk Conversational Trigger - Sleek Pro Coder Satin Button */}
           <button
             onClick={(e) => {
               e.stopPropagation();
               onStartInteraction?.(character);
             }}
             type="button"
-            className="flex items-center justify-center gap-2 px-7 py-3 rounded-full type-body-sm font-extrabold text-black tracking-wide shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer hover:brightness-125"
+            className="flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl text-xs font-black text-black tracking-wide shadow-[0_10px_35px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.4)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer hover:brightness-110"
             style={{
               backgroundColor: character.themeColor,
-              boxShadow: `0 0 30px ${character.ambientGlow}, 0 6px 20px rgba(0,0,0,0.7)`
+              boxShadow: `0 0 30px ${character.ambientGlow}, 0 8px 25px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.45)`
             }}
           >
             <MessageSquare className="w-4 h-4 fill-black stroke-black shrink-0" />
-            <span>Let&apos;s Talk</span>
+            <span>Practice With {character.name.split(' ')[1] || character.name}</span>
           </button>
         </div>
       </div>

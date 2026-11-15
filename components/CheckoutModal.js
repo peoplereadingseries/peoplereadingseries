@@ -201,16 +201,16 @@ export default function CheckoutModal({ item, isOpen, onClose }) {
             </div>
 
             {/* Price & Summary Box */}
-            <div className="p-4 rounded-2xl bg-[#141a26] border border-white/10 mb-5 flex items-center justify-between">
+            <div className="p-4 rounded-xl bg-zinc-950/70 border border-white/[0.08] mb-5 flex items-center justify-between">
               <div>
-                <span className="type-caption font-mono text-zinc-400 block">Total Investment</span>
-                <span className="type-h2 font-black text-amber-400 tabular-nums">₹{price}</span>
+                <span className="text-xs font-mono text-zinc-400 block">Total Investment</span>
+                <span className="text-2xl font-black text-amber-400 tabular-nums">₹{price}</span>
               </div>
               <div className="text-right">
-                <span className="type-caption font-mono text-emerald-400 font-bold bg-emerald-950/60 border border-emerald-500/40 px-2.5 py-1 rounded-full block">
+                <span className="text-xs font-mono text-emerald-400 font-semibold block">
                   {isBundle ? `SAVE ₹${originalPrice - price} (55% OFF)` : `50% Launch Special`}
                 </span>
-                <span className="type-caption font-mono text-zinc-500 line-through mt-0.5 block tabular-nums">
+                <span className="text-xs font-mono text-zinc-500 line-through mt-0.5 block tabular-nums">
                   ₹{originalPrice}
                 </span>
               </div>
@@ -229,7 +229,7 @@ export default function CheckoutModal({ item, isOpen, onClose }) {
               
               {/* Full Name */}
               <div>
-                <label className="type-caption font-mono font-bold text-zinc-300 flex items-center gap-1.5 mb-1.5">
+                <label className="text-xs font-mono font-bold text-zinc-300 flex items-center gap-1.5 mb-1.5">
                   <User className="w-3.5 h-3.5 text-amber-400" />
                   <span>Full Name *</span>
                 </label>
@@ -239,16 +239,16 @@ export default function CheckoutModal({ item, isOpen, onClose }) {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Aakash Verma"
-                  className="w-full bg-[#171f30] border border-white/15 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all"
+                  className="w-full bg-[#121622] border border-white/10 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all"
                 />
-                <span className="text-[11px] text-zinc-400 block mt-1">
-                  💡 This name will appear on your personalized Reader license.
+                <span className="text-[11px] text-zinc-500 block mt-1">
+                  Personalizes your verified DRM Reader license.
                 </span>
               </div>
 
               {/* Email ID */}
               <div>
-                <label className="type-caption font-mono font-bold text-zinc-300 flex items-center gap-1.5 mb-1.5">
+                <label className="text-xs font-mono font-bold text-zinc-300 flex items-center gap-1.5 mb-1.5">
                   <Mail className="w-3.5 h-3.5 text-amber-400" />
                   <span>Email Address (Login Credential) *</span>
                 </label>
@@ -258,21 +258,21 @@ export default function CheckoutModal({ item, isOpen, onClose }) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full bg-[#171f30] border border-white/15 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all"
+                  className="w-full bg-[#121622] border border-white/10 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all"
                 />
-                <span className="text-[11px] text-zinc-400 block mt-1">
-                  💡 Your permanent login ID. When you return on this device, you won&apos;t need to log in again.
+                <span className="text-[11px] text-zinc-500 block mt-1">
+                  Permanent login ID. Automatically remembered on this browser session.
                 </span>
               </div>
 
               {/* Phone Number */}
               <div>
-                <label className="type-caption font-mono font-bold text-zinc-300 flex items-center gap-1.5 mb-1.5">
+                <label className="text-xs font-mono font-bold text-zinc-300 flex items-center gap-1.5 mb-1.5">
                   <Phone className="w-3.5 h-3.5 text-amber-400" />
                   <span>Phone Number *</span>
                 </label>
                 <div className="flex gap-2">
-                  <span className="px-3 py-2.5 bg-[#171f30] border border-white/15 rounded-xl text-zinc-400 text-xs font-mono font-bold flex items-center">
+                  <span className="px-3 py-2.5 bg-[#121622] border border-white/10 rounded-xl text-zinc-400 text-xs font-mono font-bold flex items-center">
                     +91
                   </span>
                   <input
@@ -281,11 +281,11 @@ export default function CheckoutModal({ item, isOpen, onClose }) {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="98765 43210"
-                    className="flex-1 bg-[#171f30] border border-white/15 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all"
+                    className="flex-1 bg-[#121622] border border-white/10 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all"
                   />
                 </div>
-                <span className="text-[11px] text-zinc-400 block mt-1">
-                  💡 Used for single-device verification and WhatsApp-style session management.
+                <span className="text-[11px] text-zinc-500 block mt-1">
+                  Required for hardware concurrency check and session encryption.
                 </span>
               </div>
 
@@ -325,25 +325,25 @@ export default function CheckoutModal({ item, isOpen, onClose }) {
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-1 space-y-2.5">
+              <div className="pt-2 space-y-2.5">
                 <button
                   type="submit"
                   disabled={isProcessing}
-                  className="w-full py-3.5 px-4 rounded-xl font-black text-sm bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 hover:from-amber-300 hover:to-yellow-400 text-black shadow-lg transition-all active:scale-98 flex items-center justify-center gap-2 cursor-pointer min-h-[46px]"
+                  className="w-full py-4 px-4 rounded-xl font-black text-sm bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 hover:brightness-110 text-black shadow-[0_10px_30px_rgba(245,158,11,0.35),inset_0_1px_0_rgba(255,255,255,0.4)] transition-all active:scale-98 flex items-center justify-center gap-2 cursor-pointer min-h-[48px]"
                 >
                   <ShieldCheck className="w-4 h-4 text-black" strokeWidth={2.5} />
-                  <span>{isProcessing ? 'Creating Account & Securing...' : `Pay ₹${price} & Unlock Web Reader`}</span>
+                  <span>{isProcessing ? 'Securing Transaction...' : `Pay ₹${price} & Unlock Web Reader`}</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={handleTestInstantUnlock}
                   disabled={isProcessing}
-                  className="w-full py-2.5 px-3 rounded-xl type-caption font-mono font-bold bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 border border-zinc-700/80 transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px]"
+                  className="w-full py-2.5 px-3 rounded-xl text-xs font-mono font-semibold bg-white/[0.04] hover:bg-white/[0.08] text-zinc-400 hover:text-white border border-white/10 transition-all flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px]"
                   title="Instant Test Unlock without real payment"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" strokeWidth={2} />
-                  <span>Instant Test Unlock (Test Checkout)</span>
+                  <span>Instant Test Sandbox (Bypass Gateway)</span>
                 </button>
               </div>
 
