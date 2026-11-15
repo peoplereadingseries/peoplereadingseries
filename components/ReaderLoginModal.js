@@ -101,7 +101,7 @@ export default function ReaderLoginModal({ isOpen, onClose }) {
         {/* Header with Official Logo */}
         <div className="text-center mb-6">
           <Image
-            src="/images/logo.jpg"
+            src="/images/logo.png"
             alt="PeopleReading SERIES"
             width={789}
             height={189}

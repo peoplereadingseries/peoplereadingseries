@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import {
   X,
   ShieldCheck,
@@ -14,7 +15,8 @@ import {
   Mail,
   Phone,
   Sparkles,
-  KeyRound
+  KeyRound,
+  FileText
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -34,6 +36,7 @@ export default function CheckoutModal({ item, isOpen, onClose }) {
   const price = item.price ? Number(String(item.price).replace(/[^0-9]/g, '')) || 999 : 999;
   const originalPrice = item.originalPrice ? Number(String(item.originalPrice).replace(/[^0-9]/g, '')) || (isBundle ? 2195 : 899) : (isBundle ? 2195 : 899);
   const title = item.title;
+  const coverImage = item.coverImage || item.thumbUrl || item.avatarImage || '/images/thepeoplelanguage/cover_charmer_v2.jpg';
 
   const getDeviceId = () => {
     if (typeof window === 'undefined') return 'dev_checkout';
@@ -128,7 +131,7 @@ export default function CheckoutModal({ item, isOpen, onClose }) {
               contact: phone.trim(),
             },
             handler: async function () {
-              const u = await registerUserAndUnlock(email.trim(), name.trim(), phone.trim());
+              await registerUserAndUnlock(email.trim(), name.trim(), phone.trim());
               setIsProcessing(false);
               setIsSuccess(true);
             },
@@ -144,7 +147,7 @@ export default function CheckoutModal({ item, isOpen, onClose }) {
     }
 
     // Direct registration fallback (demo/sandbox)
-    const u = await registerUserAndUnlock(email.trim(), name.trim(), phone.trim());
+    await registerUserAndUnlock(email.trim(), name.trim(), phone.trim());
     setTimeout(() => {
       setIsProcessing(false);
       setIsSuccess(true);
@@ -156,7 +159,7 @@ export default function CheckoutModal({ item, isOpen, onClose }) {
     const demoName = name.trim() || 'Demo Reader';
     const demoPhone = phone.trim() || '+91 9876543210';
     setIsProcessing(true);
-    const u = await registerUserAndUnlock(demoEmail, demoName, demoPhone);
+    await registerUserAndUnlock(demoEmail, demoName, demoPhone);
     setIsProcessing(false);
     setIsSuccess(true);
   };
@@ -308,8 +311,21 @@ export default function CheckoutModal({ item, isOpen, onClose }) {
                 </div>
               </div>
 
+              {/* Privacy Policy & No-Refund Terms Agreement */}
+              <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 text-[11px] text-zinc-400 text-center leading-relaxed">
+                By clicking pay, you agree to our{' '}
+                <Link href="/privacy-policy" target="_blank" className="text-zinc-300 underline hover:text-white">
+                  Privacy Policy
+                </Link>{' '}
+                and accept our{' '}
+                <Link href="/privacy-policy#no-refund" target="_blank" className="text-rose-400 font-bold underline hover:text-rose-300">
+                  Strict No-Refund Policy
+                </Link>{' '}
+                for instant digital goods.
+              </div>
+
               {/* Action Buttons */}
-              <div className="pt-2 space-y-2.5">
+              <div className="pt-1 space-y-2.5">
                 <button
                   type="submit"
                   disabled={isProcessing}
@@ -334,85 +350,125 @@ export default function CheckoutModal({ item, isOpen, onClose }) {
             </form>
           </div>
         ) : (
-          /* Payment Success & Auto-Account Confirmation */
-          <div className="text-center py-4 space-y-5 animate-in fade-in duration-300">
-            <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center mx-auto shadow-[0_0_35px_rgba(16,185,129,0.35)]">
-              <CheckCircle2 className="w-9 h-9" strokeWidth={2.5} />
-            </div>
-
-            <div>
-              <span className="type-eyebrow font-mono text-emerald-400 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/40 inline-block mb-1">
-                Account Active • Books Unlocked
+          /* ========================================================
+             PERFECT POST-PURCHASE READING LAUNCHER UI
+             ======================================================== */
+          <div className="py-2 space-y-5 animate-in fade-in duration-300">
+            
+            {/* Top Celebration Header */}
+            <div className="text-center space-y-2">
+              <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center mx-auto shadow-[0_0_40px_rgba(16,185,129,0.35)]">
+                <CheckCircle2 className="w-9 h-9" strokeWidth={2.5} />
+              </div>
+              <span className="type-eyebrow font-mono text-emerald-400 px-3.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/40 inline-block">
+                Purchase Confirmed • Full Reading Access Unlocked
               </span>
-              <h3 className="type-h3 font-black text-white mt-2">
-                Welcome to PeopleReading, {createdUser?.name || name || 'Reader'}!
+              <h3 className="text-2xl sm:text-3xl font-black text-white">
+                You&apos;re All Set, {createdUser?.name || name || 'Reader'}!
               </h3>
-              <p className="type-body-sm text-zinc-300 mt-1 max-w-sm mx-auto">
-                Your account is ready. Your books are now tied directly to this device for instant access.
+              <p className="text-xs sm:text-sm text-zinc-300 max-w-md mx-auto leading-relaxed">
+                Your permanent Reader license has been created and bound to this device. You can start reading immediately below.
               </p>
             </div>
 
-            {/* Generated Reader Credentials Card */}
-            <div className="p-4 rounded-2xl bg-[#141a26] border border-amber-400/30 text-left space-y-2.5">
+            {/* Unlocked Book Hero Showcase Card */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#172033] to-[#0d121c] border border-amber-400/40 shadow-xl flex flex-col sm:flex-row items-center gap-4">
+              <div className="relative w-20 h-28 sm:w-24 sm:h-32 rounded-xl overflow-hidden border border-white/20 shrink-0 shadow-2xl bg-black">
+                <Image
+                  src={coverImage}
+                  alt={title}
+                  fill
+                  className="object-cover"
+                  sizes="100px"
+                />
+              </div>
+              <div className="flex-1 text-center sm:text-left space-y-1.5">
+                <div className="flex items-center justify-center sm:justify-start gap-2">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                    {isBundle ? 'ALL 5 VOLUMES UNLOCKED' : 'READY TO READ'}
+                  </span>
+                  <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Single-Device Active</span>
+                  </span>
+                </div>
+                <h4 className="text-lg font-black text-white leading-snug">{title}</h4>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  Full unabridged text with psychological tactics, behavioral frameworks, and offline phone widget support.
+                </p>
+              </div>
+            </div>
+
+            {/* Reader Identity & Device Credentials Box */}
+            <div className="p-4 rounded-2xl bg-[#121724] border border-white/10 text-left space-y-2.5">
               <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                <span className="text-[11px] font-mono text-zinc-400">READER ID</span>
-                <span className="text-sm font-mono font-black text-amber-300 tracking-wider">
+                <span className="text-[11px] font-mono text-zinc-400">YOUR PERMANENT READER ID</span>
+                <span className="text-sm font-mono font-black text-amber-300 tracking-wider bg-amber-950/40 border border-amber-500/30 px-2.5 py-0.5 rounded-md">
                   {createdUser?.userId || 'PR-ACTIVE'}
                 </span>
               </div>
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-zinc-400">Account Name:</span>
-                <span className="text-white font-bold">{createdUser?.name || name}</span>
-              </div>
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-zinc-400">Login Email:</span>
-                <span className="text-white font-mono">{createdUser?.email || email}</span>
-              </div>
-              {createdUser?.phone && (
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-zinc-400">Registered Phone:</span>
-                  <span className="text-white font-mono">{createdUser.phone}</span>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <div>
+                  <span className="text-zinc-500 text-[11px] block">Reader Name:</span>
+                  <span className="text-white font-bold">{createdUser?.name || name}</span>
                 </div>
-              )}
-              <div className="flex items-center justify-between text-xs pt-1 border-t border-white/5">
-                <span className="text-zinc-400">Authorized Device:</span>
-                <span className="text-emerald-400 font-bold flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span>{createdUser?.activeDeviceInfo || 'This Device'}</span>
+                <div>
+                  <span className="text-zinc-500 text-[11px] block">Login Email:</span>
+                  <span className="text-white font-mono truncate block">{createdUser?.email || email}</span>
+                </div>
+                {createdUser?.phone && (
+                  <div>
+                    <span className="text-zinc-500 text-[11px] block">Registered Phone:</span>
+                    <span className="text-white font-mono">{createdUser.phone}</span>
+                  </div>
+                )}
+                <div>
+                  <span className="text-zinc-500 text-[11px] block">Authorized Device:</span>
+                  <span className="text-emerald-400 font-bold flex items-center gap-1.5 truncate">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>{createdUser?.activeDeviceInfo || 'This Device'}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Auto-Recognition Guarantee */}
+            <div className="p-3.5 rounded-xl bg-black/60 border border-white/10 text-xs text-zinc-300 flex items-start gap-2.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+              <div className="leading-snug">
+                <strong className="text-white block font-semibold">Zero login required on this device</strong>
+                <span className="text-[11px] text-zinc-400">
+                  Next time you visit PeopleReading, your name and Reader ID are recognized automatically.
                 </span>
               </div>
             </div>
 
-            {/* Auto-Login Guarantee Explanation */}
-            <div className="p-3.5 rounded-xl bg-black/60 border border-white/10 text-left text-xs text-zinc-300 space-y-1.5">
-              <p className="font-semibold text-white flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Zero login needed on this device next time</span>
-              </p>
-              <p className="text-[11px] text-zinc-400">
-                Next time you open our website on this phone/browser, your Reader ID will already show your name ({createdUser?.name || name}).
-              </p>
-            </div>
-
-            {/* Launch Actions */}
-            <div className="space-y-2.5 pt-2">
+            {/* Primary Action Button: Direct to Reader */}
+            <div className="space-y-2.5 pt-1">
               <Link
-                href="/reader"
+                href={`/reader?book=${item.id || 'the-charmer'}`}
                 onClick={onClose}
-                className="w-full py-3.5 px-4 rounded-xl font-black text-sm bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black shadow-lg transition-all active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-4 px-6 rounded-2xl font-black text-base bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-black shadow-[0_4px_25px_rgba(245,158,11,0.4)] transition-all active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
               >
-                <BookOpen className="w-4 h-4 text-black" strokeWidth={2.5} />
-                <span>Open Web Reader Now</span>
-                <ArrowRight className="w-4 h-4 text-black" />
+                <BookOpen className="w-5 h-5 text-black" strokeWidth={2.5} />
+                <span>Start Reading Now (Chapter 1)</span>
+                <ArrowRight className="w-5 h-5 text-black" />
               </Link>
 
               <button
                 onClick={onClose}
-                className="w-full py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white type-caption font-mono font-semibold border border-zinc-700 transition-all cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 text-zinc-400 hover:text-white type-caption font-mono font-semibold border border-zinc-700/80 transition-all cursor-pointer"
               >
-                Close Window
+                Close & Return to Store
               </button>
             </div>
+
+            {/* Strict Digital Goods No-Refund Reminder */}
+            <p className="text-[10px] text-zinc-500 text-center">
+              Licensed Digital Edition • Protected by Proprietary DRM • Non-Refundable
+            </p>
+
           </div>
         )}
 

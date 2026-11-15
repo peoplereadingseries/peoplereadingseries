@@ -3,13 +3,11 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { BookOpen, Sparkles, Menu, X, ShieldCheck } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
 
 export default function Navbar({ onBuyBundle }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  const { language, setLanguage } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,7 +40,7 @@ export default function Navbar({ onBuyBundle }) {
         {/* Official Brand Logo */}
         <Link href="/" className="flex items-center group shrink-0">
           <Image
-            src="/images/logo.jpg"
+            src="/images/logo.png"
             alt="PeopleReading SERIES"
             width={789}
             height={189}
@@ -90,23 +88,7 @@ export default function Navbar({ onBuyBundle }) {
             </Link>
           ) : null}
 
-          {/* Compact Language Toggle */}
-          <div className="bg-white/5 border border-white/10 rounded-full p-0.5 flex text-[10px] font-semibold text-zinc-400">
-            {['English', 'Tamil', 'Tanglish'].map((lang) => (
-              <button
-                key={lang}
-                onClick={() => setLanguage(lang)}
-                className={`px-2 py-0.5 rounded-full transition-all cursor-pointer ${
-                  language === lang
-                    ? 'bg-white text-black font-bold'
-                    : 'hover:text-white'
-                }`}
-              >
-                {lang === 'English' ? 'EN' : lang === 'Tamil' ? 'தமிழ்' : 'Tang'}
-              </button>
-            ))}
-          </div>
-
+          {/* CTA Button */}
           <button
             onClick={onBuyBundle}
             className="px-4 py-2 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-black text-xs font-black shadow-md transition-all active:scale-95 flex items-center gap-1.5 cursor-pointer"
@@ -163,29 +145,15 @@ export default function Navbar({ onBuyBundle }) {
             </Link>
           </div>
 
-          <div className="pt-2 border-t border-white/10 flex items-center justify-between">
-            <div className="bg-white/5 border border-white/10 rounded-full p-0.5 flex text-xs">
-              {['English', 'Tamil', 'Tanglish'].map((lang) => (
-                <button
-                  key={lang}
-                  onClick={() => setLanguage(lang)}
-                  className={`px-2 py-0.5 rounded-full ${
-                    language === lang ? 'bg-white text-black font-bold' : 'text-zinc-400'
-                  }`}
-                >
-                  {lang === 'English' ? 'EN' : lang === 'Tamil' ? 'தமிழ்' : 'Tang'}
-                </button>
-              ))}
-            </div>
-
+          <div className="pt-2 border-t border-white/10 flex items-center justify-end">
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onBuyBundle();
               }}
-              className="px-4 py-1.5 rounded-full bg-amber-400 text-black text-xs font-bold"
+              className="w-full py-2.5 rounded-full bg-gradient-to-r from-amber-400 to-yellow-500 text-black text-xs font-bold text-center"
             >
-              Get All 5 (₹999)
+              Get All 5 Books (₹999)
             </button>
           </div>
         </div>

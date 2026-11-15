@@ -62,7 +62,6 @@ export default function PersonaChatExperience({
 
   const { language: contextLang, setLanguage: setContextLang } = useLanguage();
   const [activeLang, setActiveLang] = useState<Language>(() => {
-    if (contextLang === 'Tamil') return Language.TAMIL;
     if (contextLang === 'Tanglish') return Language.TANGLISH;
     return Language.ENGLISH;
   });
@@ -117,8 +116,7 @@ export default function PersonaChatExperience({
   // Sync language with global context
   useEffect(() => {
     if (contextLang) {
-      if (contextLang === 'Tamil') setActiveLang(Language.TAMIL);
-      else if (contextLang === 'Tanglish') setActiveLang(Language.TANGLISH);
+      if (contextLang === 'Tanglish') setActiveLang(Language.TANGLISH);
       else setActiveLang(Language.ENGLISH);
     }
   }, [contextLang]);
@@ -339,9 +337,7 @@ export default function PersonaChatExperience({
 
   const handleVoiceIntro = () => {
     const greetingText =
-      activeLang === Language.TAMIL
-        ? persona.voiceIntro.Tamil
-        : activeLang === Language.TANGLISH
+      activeLang === Language.TANGLISH
         ? persona.voiceIntro.Tanglish
         : persona.voiceIntro.English;
     playVoice(greetingText, 'intro');
@@ -357,7 +353,7 @@ export default function PersonaChatExperience({
         recognition.continuous = false;
         recognition.interimResults = false;
         recognition.lang =
-          activeLang === Language.TAMIL || activeLang === Language.TANGLISH ? 'ta-IN' : 'en-US';
+          activeLang === Language.TANGLISH ? 'ta-IN' : 'en-US';
 
         recognition.onresult = (event: any) => {
           const transcript = event.results[0][0].transcript;
@@ -434,9 +430,7 @@ export default function PersonaChatExperience({
 
       if (!botResponse) {
         botResponse =
-          activeLang === Language.TAMIL
-            ? persona.fallbacks.Tamil
-            : activeLang === Language.TANGLISH
+          activeLang === Language.TANGLISH
             ? persona.fallbacks.Tanglish
             : persona.fallbacks.English;
       }
@@ -457,9 +451,7 @@ export default function PersonaChatExperience({
     } catch (err: any) {
       console.warn('Chat error handled gracefully:', err?.message || err);
       const fallbackText =
-        activeLang === Language.TAMIL
-          ? persona.fallbacks.Tamil
-          : activeLang === Language.TANGLISH
+        activeLang === Language.TANGLISH
           ? persona.fallbacks.Tanglish
           : persona.fallbacks.English;
 
@@ -696,19 +688,19 @@ export default function PersonaChatExperience({
               </button>
             )}
 
-            {/* Language Switcher */}
+            {/* Language Switcher: English & Tanglish only */}
             <div className="bg-zinc-900 border border-zinc-800 rounded-full px-1 py-0.5 flex text-[10px] font-semibold text-zinc-400">
-              {([Language.ENGLISH, Language.TAMIL, Language.TANGLISH] as const).map((lang) => (
+              {([Language.ENGLISH, Language.TANGLISH] as const).map((lang) => (
                 <button
                   key={lang}
                   onClick={() => handleLangChange(lang)}
-                  className={`px-1.5 py-0.5 rounded-full transition-all cursor-pointer ${
+                  className={`px-2 py-0.5 rounded-full transition-all cursor-pointer ${
                     activeLang === lang
-                      ? 'bg-white text-black font-bold shadow-xs'
+                      ? 'bg-amber-400 text-black font-bold shadow-xs'
                       : 'hover:text-white'
                   }`}
                 >
-                  {lang === Language.ENGLISH ? 'EN' : lang === Language.TAMIL ? 'தமிழ்' : 'Tang'}
+                  {lang === Language.ENGLISH ? 'English' : 'Tanglish'}
                 </button>
               ))}
             </div>
@@ -995,10 +987,8 @@ export default function PersonaChatExperience({
                 placeholder={
                   isLocked && !isPaid
                     ? 'Free 5-min session ended. Unlock to chat...'
-                    : activeLang === Language.TAMIL
-                    ? `${persona.name}-யிடம் உங்கள் கேள்வியைத் தட்டச்சு செய்க...`
                     : activeLang === Language.TANGLISH
-                    ? `Ask ${persona.name} what to do macha...`
+                    ? `Ask ${persona.name} in Tanglish (e.g. epdi deal pandradhu?)...`
                     : `Ask ${persona.name} for actionable advice or tactics...`
                 }
                 className="w-full bg-[#111113] text-white placeholder:text-zinc-500 text-base sm:text-sm py-2.5 pl-4 pr-10 rounded-full border border-zinc-800 focus:outline-none focus:border-white focus:ring-1 focus:ring-white shadow-inner disabled:bg-zinc-900 disabled:text-zinc-600"
@@ -1122,7 +1112,7 @@ export default function PersonaChatExperience({
                   <div className="w-4 h-4 rounded-full bg-white text-black flex items-center justify-center shrink-0">
                     <Check className="w-2.5 h-2.5 stroke-[3]" />
                   </div>
-                  <span>Real-time Voice Synthesis in English, Tamil & Tanglish</span>
+                  <span>Real-time Voice Synthesis in English & Tanglish</span>
                 </div>
               </div>
 

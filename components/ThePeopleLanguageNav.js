@@ -53,7 +53,7 @@ export default function ThePeopleLanguageNav({ onGetStarted, onOpenSearch, onLog
         {/* Official Brand Logo */}
         <Link href="/" className="flex items-center group cursor-pointer shrink-0">
           <Image
-            src="/images/logo.jpg"
+            src="/images/logo.png"
             alt="PeopleReading SERIES — READ • UNDERSTAND • CONNECT"
             width={789}
             height={189}

@@ -17,7 +17,7 @@ export default function Footer({ onSelectBook }) {
             {/* Official Brand Logo */}
             <Link href="/" className="inline-block group">
               <Image
-                src="/images/logo.jpg"
+                src="/images/logo.png"
                 alt="PeopleReading SERIES"
                 width={789}
                 height={189}
@@ -110,9 +110,20 @@ export default function Footer({ onSelectBook }) {
             <FileText className="w-3.5 h-3.5 text-zinc-500 shrink-0" strokeWidth={1.5} />
             <span>Proprietary behavioral communication framework. All intellectual property, character likenesses, text, and artwork are fully protected under international copyright law.</span>
           </p>
-          <p className="font-mono text-zinc-400 shrink-0">
-            © {new Date().getFullYear()} PeopleReadingSeries™. All Rights Reserved.
-          </p>
+          
+          <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-zinc-400">
+            <Link href="/privacy-policy" className="hover:text-amber-400 transition-colors underline decoration-zinc-700">
+              Privacy Policy
+            </Link>
+            <span className="text-zinc-600">•</span>
+            <Link href="/privacy-policy#no-refund" className="text-rose-400 hover:text-rose-300 transition-colors underline decoration-rose-500/40 font-bold">
+              No-Refund Terms
+            </Link>
+            <span className="text-zinc-600">•</span>
+            <span className="text-zinc-500">
+              © {new Date().getFullYear()} PeopleReadingSeries™
+            </span>
+          </div>
         </div>
 
       </div>

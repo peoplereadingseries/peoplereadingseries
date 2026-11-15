@@ -1,0 +1,65 @@
+{
+  "users": {
+    "reader@peoplereadingseries.com": {
+      "activeDeviceId": "dev_1794672898368_6apn9ny",
+      "activeDeviceInfo": "Windows PC (en-IN)",
+      "activeSessionToken": "sess_4aa464a94837854c71f2606eec0a7df687e22db79fd2ff4a",
+      "createdAt": "2026-11-14T16:10:44.278Z",
+      "email": "reader@peoplereadingseries.com",
+      "lastActiveAt": "2026-11-15T11:28:52.536Z",
+      "name": "Demo Reader",
+      "purchasedBooks": [
+        "the-charmer",
+        "the-negotiator",
+        "the-detective",
+        "the-leader",
+        "the-heart-reader"
+      ]
+    },
+    "firebasetest_1794736058085@peoplereadingseries.com": {
+      "activeDeviceInfo": "Samsung Galaxy S24",
+      "purchasedBooks": [
+        "the-charmer"
+      ],
+      "lastActiveAt": "2026-11-15T09:47:39.209Z",
+      "activeSessionToken": "sess_75a54ec534fd01edd062fe54261fab920214c09f30deb9c5",
+      "activeDeviceId": "phone_b",
+      "name": "Firebase Reader",
+      "email": "firebasetest_1794736058085@peoplereadingseries.com",
+      "createdAt": "2026-11-15T09:47:38.458Z"
+    },
+    "checkout_user_1794741383033@peoplereadingseries.com": {
+      "userId": "PR-380943",
+      "phone": "+91 9876543210",
+      "lastActiveAt": "2026-11-15T11:16:25.235Z",
+      "createdAt": "2026-11-15T11:16:23.829Z",
+      "activeDeviceId": "android_samsung",
+      "name": "Priya Sharma",
+      "purchasedBooks": [
+        "the-charmer",
+        "the-leader"
+      ],
+      "activeSessionToken": "sess_96d328c07dc5fa3021daa08fc947ef887f183ea954b73198",
+      "activeDeviceInfo": "Samsung Galaxy S24",
+      "email": "checkout_user_1794741383033@peoplereadingseries.com"
+    },
+    "subashmaharajan66@gmail.com": {
+      "phone": "8300763488",
+      "name": "Subash M A",
+      "email": "subashmaharajan66@gmail.com",
+      "lastActiveAt": "2026-11-15T11:32:34.127Z",
+      "userId": "PR-101571",
+      "activeDeviceId": "dev_1794672898368_6apn9ny",
+      "createdAt": "2026-11-15T11:29:57.051Z",
+      "purchasedBooks": [
+        "the-charmer",
+        "the-negotiator",
+        "the-detective",
+        "the-leader",
+        "the-heart-reader"
+      ],
+      "activeSessionToken": "sess_301dcf35ba2e4834409bf0799f9a04a7cb523ffb4e45a5b2",
+      "activeDeviceInfo": "Computer Browser (en-IN)"
+    }
+  }
+}

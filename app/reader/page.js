@@ -130,8 +130,20 @@ export default function ReaderPage() {
         if (storedUser) {
           const parsed = JSON.parse(storedUser);
           setUser(parsed);
-          // Auto select first purchased book
-          if (parsed.purchasedBooks && parsed.purchasedBooks.length > 0) {
+          
+          // Check if a specific book was requested via ?book= URL parameter
+          let targetBook = null;
+          if (typeof window !== 'undefined') {
+            const urlParams = new URLSearchParams(window.location.search);
+            const bookParam = urlParams.get('book');
+            if (bookParam && BOOKS_DATA.some((b) => b.id === bookParam)) {
+              targetBook = bookParam;
+            }
+          }
+
+          if (targetBook) {
+            setActiveBookId(targetBook);
+          } else if (parsed.purchasedBooks && parsed.purchasedBooks.length > 0) {
             setActiveBookId(parsed.purchasedBooks[0]);
           }
         }
@@ -458,7 +470,7 @@ export default function ReaderPage() {
           <div className="text-center mb-6">
             <Link href="/" className="inline-block mb-3 group">
               <Image
-                src="/images/logo.jpg"
+                src="/images/logo.png"
                 alt="PeopleReading SERIES"
                 width={789}
                 height={189}
