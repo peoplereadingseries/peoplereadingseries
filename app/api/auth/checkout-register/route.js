@@ -26,7 +26,7 @@ export async function POST(req) {
       booksToGrant = ['the-heart-reader'];
     }
 
-    const { user, sessionToken } = registerOrUpdateUser({
+    const { user, sessionToken } = await registerOrUpdateUser({
       email,
       name: name || 'Reader',
       booksToAdd: booksToGrant,

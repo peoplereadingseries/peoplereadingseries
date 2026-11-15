@@ -8,7 +8,7 @@ export async function POST(req) {
       return Response.json({ valid: false, reason: 'MISSING_CREDENTIALS' }, { status: 400 });
     }
 
-    const result = validateActiveSession({ email, sessionToken });
+    const result = await validateActiveSession({ email, sessionToken });
 
     if (!result.valid) {
       return Response.json(result, { status: 401 });

@@ -27,6 +27,8 @@ import {
   WifiOff
 } from 'lucide-react';
 import { BOOKS_DATA } from '../../lib/booksData';
+import { db } from '../../lib/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 export default function ReaderPage() {
   // Auth & Session State
@@ -221,6 +223,42 @@ export default function ReaderPage() {
       }
     }
   }, [user, sessionToken, activeBookId, loadBookContent]);
+
+  // =========================================================================
+  // REAL-TIME FIRESTORE LISTENER (Instant WhatsApp-Style Single Device Kickout)
+  // When another device logs in, Firestore pushes changes in milliseconds
+  // =========================================================================
+  useEffect(() => {
+    if (!user?.email || !sessionToken || isTakenOverByOtherDevice) return;
+
+    let unsubscribe = null;
+    try {
+      const normEmail = user.email.toLowerCase().trim();
+      const userDocRef = doc(db, 'users', normEmail);
+      unsubscribe = onSnapshot(
+        userDocRef,
+        (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.data();
+            if (data.activeSessionToken && data.activeSessionToken !== sessionToken) {
+              // Immediate real-time disconnect!
+              setIsTakenOverByOtherDevice(true);
+              setOtherDeviceInfo(data.activeDeviceInfo || 'Another Phone / Device');
+            }
+          }
+        },
+        (err) => {
+          console.warn('Realtime listener fallback notice:', err.message);
+        }
+      );
+    } catch (e) {
+      console.warn('Could not attach Firestore listener:', e.message);
+    }
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, [user?.email, sessionToken, isTakenOverByOtherDevice]);
 
   // =========================================================================
   // WHATSAPP-STYLE SINGLE DEVICE HEARTBEAT MONITOR

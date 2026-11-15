@@ -10,7 +10,7 @@ export async function POST(req) {
     }
 
     // 1. Enforce WhatsApp-Style Single Device Active Session
-    const sessionCheck = validateActiveSession({ email, sessionToken });
+    const sessionCheck = await validateActiveSession({ email, sessionToken });
     if (!sessionCheck.valid) {
       return Response.json(
         {

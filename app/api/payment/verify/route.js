@@ -53,7 +53,7 @@ export async function POST(req) {
     }
 
     // Register user in database and claim active single-device session
-    const { user, sessionToken } = registerOrUpdateUser({
+    const { user, sessionToken } = await registerOrUpdateUser({
       email,
       name: name || 'Reader',
       booksToAdd: booksToGrant,

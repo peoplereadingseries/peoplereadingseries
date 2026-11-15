@@ -15,6 +15,18 @@
       "activeDeviceId": "dev_1794672898368_6apn9ny",
       "activeDeviceInfo": "Windows PC (en-IN)",
       "lastActiveAt": "2026-11-14T16:15:23.072Z"
+    },
+    "firebasetest_1794736058085@peoplereadingseries.com": {
+      "activeDeviceInfo": "Samsung Galaxy S24",
+      "purchasedBooks": [
+        "the-charmer"
+      ],
+      "lastActiveAt": "2026-11-15T09:47:39.209Z",
+      "activeSessionToken": "sess_75a54ec534fd01edd062fe54261fab920214c09f30deb9c5",
+      "activeDeviceId": "phone_b",
+      "name": "Firebase Reader",
+      "email": "firebasetest_1794736058085@peoplereadingseries.com",
+      "createdAt": "2026-11-15T09:47:38.458Z"
     }
   }
 }

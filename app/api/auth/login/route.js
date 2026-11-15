@@ -8,7 +8,7 @@ export async function POST(req) {
       return Response.json({ error: 'Valid email is required' }, { status: 400 });
     }
 
-    const { user, sessionToken } = loginAndClaimSession({
+    const { user, sessionToken } = await loginAndClaimSession({
       email,
       name: name || 'Reader',
       deviceId: deviceId || `dev_${Date.now()}`,

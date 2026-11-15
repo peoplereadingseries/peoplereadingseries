@@ -9,7 +9,7 @@ export async function POST(req) {
     }
 
     // Claim active single-device session
-    const { user, sessionToken } = loginAndClaimSession({
+    const { user, sessionToken } = await loginAndClaimSession({
       email,
       name,
       deviceId,
