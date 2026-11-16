@@ -69,6 +69,23 @@ export default function BookDetailModal({ book, isOpen, onClose, onBuyBook }) {
                 </p>
               )}
 
+              {/* Authorship & Empirical Framework Attribution */}
+              {book.authorName && (
+                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 space-y-1">
+                  <div className="flex items-center gap-2 text-xs font-mono text-zinc-300">
+                    <span className="text-zinc-500">Curated By:</span>
+                    <strong className="text-white font-sans">{book.authorName}</strong>
+                    <span className="text-zinc-600">•</span>
+                    <span className="text-amber-400/90 text-[11px]">{book.authorCredential}</span>
+                  </div>
+                  {book.attributionFramework && (
+                    <p className="text-[11px] text-zinc-400 font-mono">
+                      <span className="text-zinc-500">Framework: </span>{book.attributionFramework}
+                    </p>
+                  )}
+                </div>
+              )}
+
               <p className="type-body-sm text-zinc-300 leading-relaxed font-normal">
                 {book.description}
               </p>

@@ -169,6 +169,11 @@ export default function Meet5PersonasSection({ onSelectPersona }) {
                       >
                         {persona.subtitle}
                       </span>
+                      {persona.book?.authorName && (
+                        <span className="text-[9.5px] font-mono text-zinc-400 block truncate mt-0.5">
+                          By {persona.book.authorName}
+                        </span>
+                      )}
                     </div>
                   </div>
 

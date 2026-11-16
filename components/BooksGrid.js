@@ -53,6 +53,12 @@ export default function BooksGrid({ onOpenBookChat, onBuyBook }) {
                     {book.title}
                   </h3>
 
+                  {book.authorName && (
+                    <div className="text-[11px] font-mono text-zinc-400">
+                      <span>By <strong className="text-zinc-200 font-sans">{book.authorName}</strong></span>
+                    </div>
+                  )}
+
                   <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal">
                     {book.hook || book.description}
                   </p>
