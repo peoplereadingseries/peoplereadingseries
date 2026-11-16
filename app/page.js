@@ -5,9 +5,6 @@ import CharacterShowcase from '../components/CharacterShowcase';
 import BooksGrid from '../components/BooksGrid';
 import BookDiagnosticQuiz from '../components/BookDiagnosticQuiz';
 import BundleShowcase from '../components/BundleShowcase';
-import ScienceFoundation from '../components/ScienceFoundation';
-import AuthorshipSection from '../components/AuthorshipSection';
-import Testimonials5Books from '../components/Testimonials5Books';
 import FAQ5Books from '../components/FAQ5Books';
 import Footer from '../components/Footer';
 import BookChatBotModal from '../components/BookChatBotModal';
@@ -117,18 +114,7 @@ export default function Home() {
         />
       </div>
 
-      {/* 7. Behavioral Science & Neurobiology Foundations */}
-      <div id="about">
-        <ScienceFoundation />
-      </div>
-
-      {/* 8. Authorship & Editorial Advisory Board */}
-      <AuthorshipSection />
-
-      {/* 9. Verified Reader Reviews & Testimonials */}
-      <Testimonials5Books />
-
-      {/* 10. Frequently Asked Questions */}
+      {/* 6. Frequently Asked Questions */}
       <FAQ5Books />
 
       {/* 11. Comprehensive PeopleReadingSeries Footer */}

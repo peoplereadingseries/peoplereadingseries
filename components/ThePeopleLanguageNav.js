@@ -90,10 +90,10 @@ export default function ThePeopleLanguageNav({ onGetStarted, onOpenSearch, onLog
             How It Works
           </a>
           <a
-            href="#about"
+            href="#faq"
             className="text-zinc-300 hover:text-white transition-colors"
           >
-            About
+            FAQ
           </a>
           <Link
             href="/reader"
@@ -231,11 +231,11 @@ export default function ThePeopleLanguageNav({ onGetStarted, onOpenSearch, onLog
               How It Works
             </a>
             <a
-              href="#about"
+              href="#faq"
               onClick={() => setMobileMenuOpen(false)}
               className="text-zinc-300 hover:text-white"
             >
-              About
+              FAQ
             </a>
             <Link
               href="/reader"

@@ -41,7 +41,7 @@ export default function FAQ5Books() {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section className="py-24 sm:py-32 px-4 sm:px-6 relative overflow-hidden bg-[#04060b] text-white border-t border-white/[0.08]">
+    <section id="faq" className="py-24 sm:py-32 px-4 sm:px-6 relative overflow-hidden bg-[#04060b] text-white border-t border-white/[0.08]">
       <div className="max-w-4xl mx-auto relative z-10">
         
         {/* Section Header */}

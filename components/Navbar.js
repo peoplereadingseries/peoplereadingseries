@@ -61,8 +61,8 @@ export default function Navbar({ onBuyBundle }) {
           <a href="#bundle" className="hover:text-white transition-colors">
             Complete Boxset
           </a>
-          <a href="#science" className="hover:text-white transition-colors">
-            Psychology
+          <a href="#faq" className="hover:text-white transition-colors">
+            FAQ
           </a>
           <Link
             href="/reader"
@@ -137,8 +137,8 @@ export default function Navbar({ onBuyBundle }) {
             <a href="#bundle" onClick={() => setMobileMenuOpen(false)} className="hover:text-white">
               Complete Boxset (₹999)
             </a>
-            <a href="#science" onClick={() => setMobileMenuOpen(false)} className="hover:text-white">
-              Science & Psychology
+            <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="hover:text-white">
+              FAQ
             </a>
             <Link href="/reader" onClick={() => setMobileMenuOpen(false)} className="text-amber-400 font-bold">
               Web Reader Portal
