@@ -104,14 +104,13 @@ const jsonLd = {
         "@type": "ContactPoint",
         "telephone": "+91-98765-43210",
         "contactType": "customer service",
-        "email": "support@peoplereadingseries.com",
+        "email": "peoplereadingseries@gmail.com",
         "availableLanguage": ["English", "Hindi"]
       },
       "sameAs": [
         "https://instagram.com/peoplereadingseries",
-        "https://linkedin.com/company/peoplereadingseries",
-        "https://x.com/peoplereading",
-        "https://reddit.com/r/PeopleReadingSeries"
+        "https://facebook.com/peoplereadingseries",
+        "https://linkedin.com/company/peoplereadingseries"
       ]
     },
     {

@@ -206,11 +206,11 @@ export default function PrivacyPolicyPage() {
             </p>
           </div>
           <a
-            href="mailto:support@peoplereadingseries.com"
+            href="mailto:peoplereadingseries@gmail.com"
             className="px-5 py-2.5 rounded-full bg-white text-black font-black text-xs hover:bg-zinc-200 transition-all flex items-center gap-1.5 shrink-0"
           >
             <Mail className="w-3.5 h-3.5" />
-            <span>Contact Support</span>
+            <span>Contact Email</span>
           </a>
         </section>
 
