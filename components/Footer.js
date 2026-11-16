@@ -3,17 +3,13 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { 
-  BookOpen, 
   ShieldCheck, 
   Lock, 
   Scale, 
   FileText, 
   Mail, 
-  Phone, 
-  MapPin, 
-  Building2
+  Phone 
 } from 'lucide-react';
-import { BOOKS_DATA } from '../lib/booksData';
 
 // Official Brand Icons for Verified Channels
 const InstagramIcon = ({ className = 'w-4 h-4' }) => (
@@ -48,16 +44,16 @@ const RedditIcon = ({ className = 'w-4 h-4' }) => (
   </svg>
 );
 
-export default function Footer({ onSelectBook }) {
+export default function Footer() {
   return (
     <footer className="py-16 sm:py-20 border-t border-white/10 bg-[#06080e] text-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         
-        {/* Main 4-Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/10">
+        {/* Main Clean 2-Column Balanced Header */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/10 items-start">
           
-          {/* Brand Info & Corporate Identity */}
-          <div className="md:col-span-4 space-y-4">
+          {/* Brand Info */}
+          <div className="md:col-span-6 space-y-4">
             <Link href="/" className="inline-block group">
               <Image
                 src="/images/logo.png"
@@ -68,108 +64,45 @@ export default function Footer({ onSelectBook }) {
               />
             </Link>
 
-            <p className="type-body-sm text-zinc-400 max-w-sm leading-relaxed">
-              Published by <strong className="text-zinc-200">PeopleReading Media & Research Pvt. Ltd.</strong> An interdisciplinary publishing lab translating clinical behavioral science into tactical communication playbooks.
+            <p className="type-body-sm text-zinc-400 max-w-md leading-relaxed">
+              Understand People. Master Communication. Unlock Your Potential. The definitive 5-volume behavioral psychology &amp; communication system with interactive scenario training engines.
             </p>
 
-            {/* Corporate Registration Details */}
-            <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 text-xs text-zinc-400 space-y-1.5 font-mono">
-              <div className="flex items-center gap-2 text-zinc-300">
-                <Building2 className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <span>CIN: U22110HR2024PTC109842</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                <span>GSTIN: 06AABCP9842Q1Z8</span>
-              </div>
-              <div className="flex items-start gap-2 pt-1 text-[11px] leading-relaxed text-zinc-500">
-                <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0 mt-0.5" />
-                <span>Tower B, 8th Floor, DLF Cyber City, Sector 24, Gurugram, Haryana 122002, India</span>
-              </div>
+            <div className="flex items-center gap-2 type-caption font-mono text-zinc-400 pt-1">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" strokeWidth={2} />
+              <span>Instant Digital Delivery • Single-Device Protected Reader</span>
             </div>
           </div>
 
-          {/* The 5 Books Links */}
-          <div className="md:col-span-3 space-y-3">
-            <h4 className="type-eyebrow font-mono text-amber-400">
-              The 5 Volumes
-            </h4>
-            <ul className="space-y-2.5 type-body-sm text-zinc-400">
-              {BOOKS_DATA.map((book) => (
-                <li key={book.id}>
-                  <button
-                    onClick={() => onSelectBook && onSelectBook(book)}
-                    className="hover:text-white transition-colors flex items-center gap-2 cursor-pointer text-left"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: book.themeColor }} />
-                    <span className="font-semibold text-zinc-200">{book.title}:</span>
-                    <span className="text-zinc-400 truncate">{book.tagline}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Academic & Editorial Ecosystem */}
-          <div className="md:col-span-2 space-y-3">
-            <h4 className="type-eyebrow font-mono text-white">
-              Research & Platform
-            </h4>
-            <ul className="space-y-2.5 type-body-sm text-zinc-400">
-              <li>
-                <a href="#science" className="hover:text-amber-400 transition-colors">
-                  Scientific Foundations
-                </a>
-              </li>
-              <li>
-                <a href="#authors" className="hover:text-amber-400 transition-colors">
-                  Authors & Editorial Board
-                </a>
-              </li>
-              <li>
-                <a href="#reviews" className="hover:text-amber-400 transition-colors">
-                  Verified Reader Ledger
-                </a>
-              </li>
-              <li>
-                <a href="#bundle" className="hover:text-white transition-colors">
-                  Complete 5-Book Boxset
-                </a>
-              </li>
-              <li>
-                <Link href="/reader" className="hover:text-amber-400 transition-colors flex items-center gap-1.5">
-                  <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Interactive Reader</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Single Official Mail, Helpline & Official Verified Channels */}
-          <div className="md:col-span-3 space-y-4">
-            <h4 className="type-eyebrow font-mono text-amber-400">
-              Direct Contact & Social
-            </h4>
-            <div className="space-y-2.5 type-body-sm text-zinc-400">
-              {/* Single Official Email Address */}
+          {/* Direct Contact & Verified Channels */}
+          <div className="md:col-span-6 md:flex md:flex-col md:items-end space-y-4">
+            <div className="space-y-2.5 text-left md:text-right">
+              <span className="type-eyebrow font-mono text-amber-400 block">
+                Official Support Desk
+              </span>
+              
+              {/* Single Official Email */}
               <a
                 href="mailto:support@peoplereadingseries.com"
-                className="flex items-center gap-2 text-zinc-200 hover:text-amber-400 transition-colors group"
+                className="inline-flex items-center gap-2 text-zinc-200 hover:text-amber-400 transition-colors group"
               >
                 <Mail className="w-4 h-4 text-amber-400 shrink-0 group-hover:scale-110 transition-transform" />
                 <span className="font-mono text-xs font-semibold">support@peoplereadingseries.com</span>
               </a>
-              <div className="flex items-center gap-2 text-zinc-300">
+
+              <div className="flex items-center md:justify-end gap-2 text-zinc-400 text-xs font-mono">
                 <Phone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span className="font-mono text-xs">+91 98765 43210</span>
-                <span className="text-[10px] text-zinc-500 font-mono">(10 AM - 7 PM IST)</span>
+                <span className="text-zinc-300 font-semibold">+91 98765 43210</span>
+                <span className="text-[11px] text-zinc-500">(Mon–Sat, 10 AM – 7 PM IST)</span>
               </div>
             </div>
 
             {/* Verified Social Media Channels with Real Brand Icons */}
-            <div className="pt-2">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 block mb-2.5">Verified Channels</span>
-              <div className="flex flex-wrap gap-2 text-xs font-mono">
+            <div className="pt-2 text-left md:text-right">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 block mb-2.5">
+                Verified Channels
+              </span>
+              <div className="flex flex-wrap md:justify-end gap-2 text-xs font-mono">
                 <a
                   href="https://instagram.com/peoplereadingseries"
                   target="_blank"
@@ -238,7 +171,7 @@ export default function Footer({ onSelectBook }) {
           </div>
           <div className="flex items-center gap-2 justify-center sm:justify-end">
             <Scale className="w-4 h-4 text-emerald-400 shrink-0" strokeWidth={2} />
-            <span>Registered IP & Copyright © 2026</span>
+            <span>Registered IP &amp; Copyright © 2026</span>
           </div>
         </div>
 
@@ -246,7 +179,7 @@ export default function Footer({ onSelectBook }) {
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left type-caption text-zinc-500">
           <p className="max-w-xl flex items-center gap-2 text-zinc-400">
             <FileText className="w-3.5 h-3.5 text-zinc-500 shrink-0" strokeWidth={1.5} />
-            <span>PeopleReading Series™ is a registered publication of PeopleReading Media & Research Pvt. Ltd. All intellectual property, curriculum architectures, characters, and materials are legally protected.</span>
+            <span>PeopleReading Series™. All intellectual property, curriculum architectures, characters, and materials are legally protected.</span>
           </p>
           
           <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-zinc-400">
@@ -263,7 +196,7 @@ export default function Footer({ onSelectBook }) {
             </Link>
             <span className="text-zinc-600">•</span>
             <span className="text-zinc-500">
-              © {new Date().getFullYear()} PeopleReading Media & Research Pvt. Ltd.
+              © {new Date().getFullYear()} PeopleReading Series™
             </span>
           </div>
         </div>
