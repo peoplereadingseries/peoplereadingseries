@@ -4,7 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { 
   BookOpen, 
-  Radio, 
   ShieldCheck, 
   Lock, 
   Scale, 
@@ -12,11 +11,42 @@ import {
   Mail, 
   Phone, 
   MapPin, 
-  Building2, 
-  ExternalLink,
-  AlertCircle
+  Building2
 } from 'lucide-react';
 import { BOOKS_DATA } from '../lib/booksData';
+
+// Official Brand Icons for Verified Channels
+const InstagramIcon = ({ className = 'w-4 h-4' }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+  </svg>
+);
+
+const XTwitterIcon = ({ className = 'w-4 h-4' }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+  </svg>
+);
+
+const LinkedInIcon = ({ className = 'w-4 h-4' }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9h2.79v8.37H6.46v-8.37M7.86 6.3a1.62 1.62 0 1 0 1.62 1.62 1.63 1.63 0 0 0-1.62-1.62Z"/>
+  </svg>
+);
+
+const YouTubeIcon = ({ className = 'w-4 h-4' }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+  </svg>
+);
+
+const RedditIcon = ({ className = 'w-4 h-4' }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .868.196 1.177.49 1.207-.866 2.87-1.433 4.699-1.498l.92-4.311 3.372.714c.05-.24.168-.456.33-.628a1.242 1.242 0 0 1 .73-.269zM8.5 12.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm7 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-5.466 4.316a.487.487 0 0 0-.083.693c.495.66 1.282 1.05 2.049 1.05.767 0 1.554-.39 2.049-1.05a.487.487 0 0 0-.083-.693.487.487 0 0 0-.693.083c-.319.426-.838.66-1.273.66-.435 0-.954-.234-1.273-.66a.487.487 0 0 0-.693-.083z"/>
+  </svg>
+);
 
 export default function Footer({ onSelectBook }) {
   return (
@@ -115,25 +145,19 @@ export default function Footer({ onSelectBook }) {
             </ul>
           </div>
 
-          {/* Support, Helpline & Official Social Profiles */}
-          <div className="md:col-span-3 space-y-3">
+          {/* Single Official Mail, Helpline & Official Verified Channels */}
+          <div className="md:col-span-3 space-y-4">
             <h4 className="type-eyebrow font-mono text-amber-400">
               Direct Contact & Social
             </h4>
             <div className="space-y-2.5 type-body-sm text-zinc-400">
+              {/* Single Official Email Address */}
               <a
                 href="mailto:support@peoplereadingseries.com"
-                className="flex items-center gap-2 hover:text-white transition-colors group"
+                className="flex items-center gap-2 text-zinc-200 hover:text-amber-400 transition-colors group"
               >
-                <Mail className="w-3.5 h-3.5 text-amber-400 shrink-0 group-hover:scale-110 transition-transform" />
-                <span className="truncate">support@peoplereadingseries.com</span>
-              </a>
-              <a
-                href="mailto:editorial@peoplereadingseries.com"
-                className="flex items-center gap-2 hover:text-white transition-colors group"
-              >
-                <Mail className="w-3.5 h-3.5 text-zinc-400 shrink-0 group-hover:scale-110 transition-transform" />
-                <span className="truncate">editorial@peoplereadingseries.com</span>
+                <Mail className="w-4 h-4 text-amber-400 shrink-0 group-hover:scale-110 transition-transform" />
+                <span className="font-mono text-xs font-semibold">support@peoplereadingseries.com</span>
               </a>
               <div className="flex items-center gap-2 text-zinc-300">
                 <Phone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
@@ -142,67 +166,64 @@ export default function Footer({ onSelectBook }) {
               </div>
             </div>
 
-            {/* Verified Social Media Channels */}
+            {/* Verified Social Media Channels with Real Brand Icons */}
             <div className="pt-2">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 block mb-2">Verified Channels</span>
+              <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500 block mb-2.5">Verified Channels</span>
               <div className="flex flex-wrap gap-2 text-xs font-mono">
                 <a
                   href="https://instagram.com/peoplereadingseries"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-2.5 py-1 rounded bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-zinc-300 hover:text-amber-400 transition-colors flex items-center gap-1"
+                  className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-gradient-to-r hover:from-pink-500/20 hover:to-amber-500/20 border border-white/10 hover:border-pink-500/40 text-zinc-300 hover:text-white transition-all flex items-center gap-1.5 group"
+                  title="Follow on Instagram"
                 >
+                  <InstagramIcon className="w-3.5 h-3.5 text-pink-400 group-hover:scale-110 transition-transform" />
                   <span>Instagram</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-60" />
-                </a>
-                <a
-                  href="https://linkedin.com/company/peoplereadingseries"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-2.5 py-1 rounded bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-zinc-300 hover:text-amber-400 transition-colors flex items-center gap-1"
-                >
-                  <span>LinkedIn</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-60" />
                 </a>
                 <a
                   href="https://x.com/peoplereading"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-2.5 py-1 rounded bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-zinc-300 hover:text-amber-400 transition-colors flex items-center gap-1"
+                  className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 hover:border-white/30 text-zinc-300 hover:text-white transition-all flex items-center gap-1.5 group"
+                  title="Follow on X (Twitter)"
                 >
-                  <span>X (Twitter)</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-60" />
+                  <XTwitterIcon className="w-3.5 h-3.5 text-zinc-200 group-hover:scale-110 transition-transform" />
+                  <span>X</span>
+                </a>
+                <a
+                  href="https://linkedin.com/company/peoplereadingseries"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-blue-500/15 border border-white/10 hover:border-blue-500/40 text-zinc-300 hover:text-white transition-all flex items-center gap-1.5 group"
+                  title="Connect on LinkedIn"
+                >
+                  <LinkedInIcon className="w-3.5 h-3.5 text-blue-400 group-hover:scale-110 transition-transform" />
+                  <span>LinkedIn</span>
+                </a>
+                <a
+                  href="https://youtube.com/@peoplereadingseries"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-red-500/15 border border-white/10 hover:border-red-500/40 text-zinc-300 hover:text-white transition-all flex items-center gap-1.5 group"
+                  title="Subscribe on YouTube"
+                >
+                  <YouTubeIcon className="w-3.5 h-3.5 text-red-400 group-hover:scale-110 transition-transform" />
+                  <span>YouTube</span>
                 </a>
                 <a
                   href="https://reddit.com/r/PeopleReadingSeries"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-2.5 py-1 rounded bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-zinc-300 hover:text-amber-400 transition-colors flex items-center gap-1"
+                  className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-orange-500/15 border border-white/10 hover:border-orange-500/40 text-zinc-300 hover:text-white transition-all flex items-center gap-1.5 group"
+                  title="Join Community on Reddit"
                 >
+                  <RedditIcon className="w-3.5 h-3.5 text-orange-400 group-hover:scale-110 transition-transform" />
                   <span>Reddit</span>
-                  <ExternalLink className="w-2.5 h-2.5 opacity-60" />
                 </a>
               </div>
             </div>
           </div>
 
-        </div>
-
-        {/* Prominent Digital Goods & No-Refund Notice Callout */}
-        <div className="my-8 p-4 rounded-xl bg-amber-500/5 border border-amber-500/20 text-xs text-zinc-400 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <div className="flex items-start sm:items-center gap-2.5">
-            <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5 sm:mt-0" />
-            <span className="leading-relaxed">
-              <strong className="text-zinc-200">Digital Product Disclosure:</strong> All 5 volumes, audio summaries, and companion modules are delivered electronically immediately upon payment. Under international consumer laws for digital downloads, all sales are strictly final and non-refundable once unlocked.
-            </span>
-          </div>
-          <Link
-            href="/privacy-policy#no-refund"
-            className="shrink-0 text-amber-400 hover:text-amber-300 font-bold underline underline-offset-2 flex items-center gap-1"
-          >
-            <span>Review Full No-Refund Policy</span>
-            <ExternalLink className="w-3 h-3" />
-          </Link>
         </div>
 
         {/* Protection & Verification Bar */}
