@@ -62,18 +62,18 @@
       "phone": "8300763488"
     },
     "akash123@gmail.com": {
-      "email": "akash123@gmail.com",
+      "activeSessionToken": "sess_c599033b55cc82545e6f93fc6c53bf9cc7646e47cb488de3",
+      "activeDeviceId": "dev_1794672898368_6apn9ny",
+      "createdAt": "2026-11-15T11:41:05.098Z",
       "purchasedBooks": [
         "the-leader"
       ],
       "userId": "PR-501722",
-      "activeSessionToken": "sess_c599033b55cc82545e6f93fc6c53bf9cc7646e47cb488de3",
-      "name": "akash",
       "phone": "8956231245",
-      "createdAt": "2026-11-15T11:41:05.098Z",
-      "activeDeviceId": "dev_1794672898368_6apn9ny",
+      "email": "akash123@gmail.com",
+      "lastActiveAt": "2026-11-16T16:26:11.336Z",
       "activeDeviceInfo": "Computer Browser (en-IN)",
-      "lastActiveAt": "2026-11-15T14:43:19.953Z"
+      "name": "akash"
     }
   }
 }
