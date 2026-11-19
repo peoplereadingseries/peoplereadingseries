@@ -1,17 +1,38 @@
 'use client';
-import { useLanguage } from '../context/LanguageContext';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 export default function WhatsAppWidget() {
   const pathname = usePathname();
-  if (pathname?.startsWith('/siya')) return null;
+  const [isChatModalOpen, setIsChatModalOpen] = useState(false);
+
+  useEffect(() => {
+    const checkChatModal = () => {
+      const hasModal = document.querySelector('[data-chatbot-modal="true"]') || document.body.classList.contains('chat-modal-open');
+      setIsChatModalOpen(Boolean(hasModal));
+    };
+
+    checkChatModal();
+    const observer = new MutationObserver(checkChatModal);
+    observer.observe(document.body, { attributes: true, childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, []);
+
+  // Remove WhatsApp icon completely on all chatbot routes and when chat modal is open
+  if (
+    pathname?.startsWith('/chat') ||
+    pathname?.startsWith('/siya') ||
+    isChatModalOpen
+  ) {
+    return null;
+  }
 
   return (
     <a
       href="https://wa.me/919876543210"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 bg-emerald-500 hover:bg-emerald-400 text-white p-3.5 rounded-full shadow-lg transition-all hover:scale-105 flex items-center justify-center group"
+      className="whatsapp-widget fixed bottom-6 right-6 z-40 bg-emerald-500 hover:bg-emerald-400 text-white p-3.5 rounded-full shadow-lg transition-all hover:scale-105 flex items-center justify-center group"
       aria-label="Chat on WhatsApp"
     >
       <svg

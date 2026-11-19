@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -19,13 +19,27 @@ import {
   X,
   Copy,
   BookOpen,
-  HelpCircle
+  HelpCircle,
+  ArrowRight,
+  User,
+  LogIn
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { Language } from './types';
 import { generateSpeech } from './geminiService';
 import { decodeBase64, decodeAudioData } from './audioUtils';
 import { getPersonaConfig, getPersonaPrompts } from '../../lib/personaChatConfigs';
+import { generateSituationalResponse } from '../../lib/chatEngine';
+
+interface ChatUser {
+  userId?: string;
+  email: string;
+  name?: string;
+  phone?: string;
+  purchasedBooks?: string[];
+  freeChatSecondsRemaining?: number;
+  freeLimitReached?: boolean;
+}
 
 interface Message {
   id: string;
@@ -103,8 +117,181 @@ export default function PersonaChatExperience({
   const [isPaid, setIsPaid] = useState<boolean>(false);
   const [showPayModal, setShowPayModal] = useState<boolean>(false);
 
+  // User Authentication & Firestore Usage State
+  const [currentUser, setCurrentUser] = useState<ChatUser | null>(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(true);
+  const [authForm, setAuthForm] = useState({ name: '', email: '', phone: '' });
+  const [authError, setAuthError] = useState<string>('');
+  const [isSubmittingAuth, setIsSubmittingAuth] = useState<boolean>(false);
+  const lastSyncedSecondsRef = useRef<number>(300);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
+
+  // Sync remaining seconds to Cloud Firestore
+  const syncUsageToFirebase = useCallback(async (seconds: number, isReached: boolean, userEmail?: string) => {
+    const targetEmail = userEmail || currentUser?.email;
+    if (!targetEmail) return;
+    try {
+      await fetch('/api/auth/chat-usage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: targetEmail,
+          secondsRemaining: seconds,
+          freeLimitReached: isReached,
+        }),
+      });
+      lastSyncedSecondsRef.current = seconds;
+    } catch (e) {
+      console.warn('Sync usage error:', e);
+    }
+  }, [currentUser?.email]);
+
+  // Initial Auth & Limit Check from Cloud Firestore
+  useEffect(() => {
+    async function initUserSession() {
+      try {
+        const storedEmail = typeof window !== 'undefined' ? localStorage.getItem('peoplereading_user_email') : null;
+        const storedToken = typeof window !== 'undefined' ? localStorage.getItem('peoplereading_session_token') : null;
+
+        if (storedEmail && storedToken) {
+          const res = await fetch('/api/auth/session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: storedEmail, sessionToken: storedToken }),
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            if (data.valid && data.user) {
+              const u: ChatUser = data.user;
+              setCurrentUser(u);
+              setAuthForm({ name: u.name || '', email: u.email || '', phone: u.phone || '' });
+
+              // Check if already paid
+              const hasBought = u.purchasedBooks?.some(
+                (b: string) => b === persona.id || b === 'complete-5-books-bundle'
+              );
+
+              if (hasBought) {
+                setIsPaid(true);
+                setIsLocked(false);
+                setSecondsRemaining(9999);
+                return;
+              }
+
+              // Check Firestore calculated free limit
+              const remaining = typeof u.freeChatSecondsRemaining === 'number' ? u.freeChatSecondsRemaining : 300;
+              const reached = Boolean(u.freeLimitReached || remaining <= 0);
+
+              setSecondsRemaining(remaining);
+              lastSyncedSecondsRef.current = remaining;
+
+              if (reached) {
+                setIsLocked(true);
+                setIsTimerRunning(false);
+                setMessages((prev) => {
+                  if (prev.some((m) => m.id.startsWith('limit-reached-') || m.id.startsWith('expiry-'))) return prev;
+                  return [
+                    ...prev,
+                    {
+                      id: `limit-reached-${Date.now()}`,
+                      sender: 'bot',
+                      text: `⏳ **You have reached your 5-minute free consultation limit on this account (${u.email}).**\n\nTo continue your strategy session with ${persona.name} and unlock unlimited consultation and real-time voice guidance, please unlock the full access pass below.`,
+                      time: getCurrentTime(),
+                    },
+                  ];
+                });
+              } else {
+                setIsLocked(false);
+              }
+              return;
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('Session check warning:', err);
+      } finally {
+        setIsCheckingAuth(false);
+      }
+    }
+
+    initUserSession();
+  }, [persona.id, persona.name]);
+
+  // Auth Form Submission Handler
+  const handleAuthSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError('');
+    setIsSubmittingAuth(true);
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: authForm.email,
+          name: authForm.name,
+          phone: authForm.phone,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Authentication failed');
+      }
+
+      const u: ChatUser = data.user;
+      setCurrentUser(u);
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('peoplereading_user_email', u.email);
+        localStorage.setItem('peoplereading_session_token', data.sessionToken);
+        localStorage.setItem('peoplereading_user_data', JSON.stringify(u));
+      }
+
+      // Check if user already purchased
+      const hasBought = u.purchasedBooks?.some(
+        (b: string) => b === persona.id || b === 'complete-5-books-bundle'
+      );
+      if (hasBought) {
+        setIsPaid(true);
+        setIsLocked(false);
+        setSecondsRemaining(9999);
+        return;
+      }
+
+      // Check Firestore free limit
+      const remaining = typeof u.freeChatSecondsRemaining === 'number' ? u.freeChatSecondsRemaining : 300;
+      const reached = Boolean(u.freeLimitReached || remaining <= 0);
+
+      setSecondsRemaining(remaining);
+      lastSyncedSecondsRef.current = remaining;
+
+      if (reached) {
+        setIsLocked(true);
+        setIsTimerRunning(false);
+        setShowPayModal(true);
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: `limit-reached-${Date.now()}`,
+            sender: 'bot',
+            text: `⏳ **You have reached your 5-minute free consultation limit on this account (${u.email}).**\n\nTo continue chatting with ${persona.name} and unlock real-time voice guidance plus the complete digital book edition, please unlock the full access pass below.`,
+            time: getCurrentTime(),
+          },
+        ]);
+      } else {
+        setIsLocked(false);
+        setIsTimerRunning(true);
+      }
+    } catch (err: any) {
+      setAuthError(err.message || 'Failed to start session');
+    } finally {
+      setIsSubmittingAuth(false);
+    }
+  };
 
   // Pre-fill input if initialMessage was passed
   useEffect(() => {
@@ -167,31 +354,41 @@ export default function PersonaChatExperience({
     return () => clearInterval(interval);
   }, [isTimerRunning, isPaid, isLocked]);
 
+  // Periodic Sync of secondsRemaining to Firestore (every 10 seconds or when reaching 0)
+  useEffect(() => {
+    if (!isTimerRunning || isPaid || !currentUser) return;
+    if (Math.abs(lastSyncedSecondsRef.current - secondsRemaining) >= 10 || secondsRemaining <= 0) {
+      syncUsageToFirebase(secondsRemaining, secondsRemaining <= 0);
+    }
+  }, [secondsRemaining, isTimerRunning, isPaid, currentUser, syncUsageToFirebase]);
+
   // Handle Session Expiration cleanly when timer reaches 0
   useEffect(() => {
     if (secondsRemaining <= 0 && isTimerRunning && !isPaid && !isLocked) {
       setIsLocked(true);
       setIsTimerRunning(false);
       setShowPayModal(true);
+      syncUsageToFirebase(0, true);
 
       setMessages((prevMsgs) => {
         // Prevent duplicate expiry messages from ever being appended
-        if (prevMsgs.some((m) => m.id.startsWith('expiry-'))) {
+        if (prevMsgs.some((m) => m.id.startsWith('expiry-') || m.id.startsWith('limit-reached-'))) {
           return prevMsgs;
         }
 
         const expiryMsg: Message = {
           id: `expiry-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
           sender: 'bot',
-          text: `⏳ **Your 5-minute free consultation with ${persona.name} has concluded!**\n\nTo continue your strategy session and unlock unlimited consultation and voice guidance, please unlock the full access pass below.`,
+          text: `⏳ **Your 5-minute free consultation with ${persona.name} has concluded!**\n\nYour session limit has been recorded. To continue your strategy session and unlock unlimited consultation and voice guidance, please unlock the full access pass below.`,
           time: getCurrentTime(),
         };
         return [...prevMsgs, expiryMsg];
       });
     }
-  }, [secondsRemaining, isTimerRunning, isPaid, isLocked, persona.name]);
+  }, [secondsRemaining, isTimerRunning, isPaid, isLocked, persona.name, syncUsageToFirebase]);
 
   const triggerSessionStart = () => {
+    if (!currentUser) return;
     if (!isTimerRunning && !isPaid && secondsRemaining > 0) {
       setIsTimerRunning(true);
     }
@@ -429,10 +626,12 @@ export default function PersonaChatExperience({
       }
 
       if (!botResponse) {
-        botResponse =
-          activeLang === Language.TANGLISH
-            ? persona.fallbacks.Tanglish
-            : persona.fallbacks.English;
+        botResponse = generateSituationalResponse({
+          botId: persona.id,
+          message: userText,
+          language: activeLang === Language.TANGLISH ? 'Tanglish' : 'English',
+          history: messages
+        });
       }
 
       const botMessageId = `bot-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
@@ -450,10 +649,12 @@ export default function PersonaChatExperience({
       }
     } catch (err: any) {
       console.warn('Chat error handled gracefully:', err?.message || err);
-      const fallbackText =
-        activeLang === Language.TANGLISH
-          ? persona.fallbacks.Tanglish
-          : persona.fallbacks.English;
+      const fallbackText = generateSituationalResponse({
+        botId: persona.id,
+        message: userText,
+        language: activeLang === Language.TANGLISH ? 'Tanglish' : 'English',
+        history: messages
+      });
 
       const fallbackMsg: Message = {
         id: `bot-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -527,11 +728,16 @@ export default function PersonaChatExperience({
     stopVoice();
     setInput('');
     setIsLoading(false);
-    setIsLocked(false);
 
     if (!isPaid) {
-      setSecondsRemaining(TOTAL_FREE_SECONDS);
-      setIsTimerRunning(false);
+      if (secondsRemaining <= 0 || currentUser?.freeLimitReached) {
+        setIsLocked(true);
+        setIsTimerRunning(false);
+      } else {
+        setIsLocked(false);
+      }
+    } else {
+      setIsLocked(false);
     }
     setShowPayModal(false);
     setMessages([]);
@@ -656,6 +862,13 @@ export default function PersonaChatExperience({
               )}
             </button>
 
+            {/* User Reader ID Pill if logged in */}
+            {currentUser?.userId && (
+              <span className="hidden md:inline text-[10px] font-mono text-zinc-400 bg-white/[0.04] border border-white/10 px-2 py-0.5 rounded-full">
+                {currentUser.userId}
+              </span>
+            )}
+
             {/* 5-minute Free Consultation Countdown Timer */}
             {isPaid ? (
               <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-zinc-900 text-white text-[11px] font-semibold border border-white/30">
@@ -667,17 +880,17 @@ export default function PersonaChatExperience({
                 onClick={() => isLocked && setShowPayModal(true)}
                 className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all border cursor-pointer ${
                   isLocked
-                    ? 'bg-white text-black border-white animate-pulse'
+                    ? 'bg-rose-500/20 text-rose-300 border-rose-500/40 hover:bg-rose-500/30'
                     : secondsRemaining <= 60
                     ? 'bg-zinc-800 text-white border-white/60 animate-pulse'
                     : 'bg-zinc-900 text-zinc-300 border-zinc-700'
                 }`}
-                title={isLocked ? 'Session ended. Click to unlock.' : 'Free 5-minute consultation timer'}
+                title={isLocked ? '5-minute limit reached. Click to unlock.' : 'Free 5-minute consultation timer'}
               >
                 {isLocked ? (
                   <>
-                    <Lock className="w-3 h-3 text-black" />
-                    <span>Pay</span>
+                    <Lock className="w-3 h-3 text-rose-400" />
+                    <span>Limit Reached</span>
                   </>
                 ) : (
                   <>
@@ -717,8 +930,111 @@ export default function PersonaChatExperience({
             backgroundPosition: '0 0, 12px 12px',
           }}
         >
+          {/* ================= LOGIN & SIGNUP GATE (BEFORE ENTERING CHAT) ================= */}
+          {!currentUser && !isCheckingAuth && (
+            <div className="absolute inset-0 bg-[#0a0a0d]/95 backdrop-blur-md z-40 flex items-center justify-center p-3 sm:p-5 animate-in fade-in duration-300">
+              <div className="w-full max-w-sm bg-[#121318] rounded-3xl p-5 sm:p-6 border border-white/15 shadow-[0_0_50px_rgba(0,0,0,0.9)] flex flex-col items-center text-center relative">
+                
+                {/* Persona Avatar */}
+                <div
+                  className="w-14 h-14 rounded-full overflow-hidden border-2 mb-2 shadow-lg"
+                  style={{
+                    borderColor: persona.themeColor,
+                    boxShadow: `0 0 20px ${persona.glowColor}`,
+                  }}
+                >
+                  <Image
+                    src={persona.avatar}
+                    alt={persona.name}
+                    width={56}
+                    height={56}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                <span
+                  className="text-[10px] font-mono uppercase tracking-wider font-bold mb-0.5"
+                  style={{ color: persona.themeColor }}
+                >
+                  Free 5-Minute Strategy Session
+                </span>
+                <h3 className="text-lg sm:text-xl font-black text-white">
+                  Enter to Chat with {persona.name}
+                </h3>
+                <p className="text-[11px] text-zinc-400 mt-1 leading-relaxed">
+                  Enter your details to create your Reader ID and activate your 5-minute free tactical session.
+                </p>
+
+                {/* Auth Form */}
+                <form onSubmit={handleAuthSubmit} className="w-full mt-3.5 space-y-2.5 text-left">
+                  <div>
+                    <label className="text-[10px] font-mono text-zinc-400 block mb-1">Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={authForm.name}
+                      onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })}
+                      placeholder="e.g. Arun Kumar"
+                      className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 text-white text-xs placeholder:text-zinc-600 focus:outline-none focus:border-white/30"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-mono text-zinc-400 block mb-1">Email Address</label>
+                    <input
+                      type="email"
+                      required
+                      value={authForm.email}
+                      onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })}
+                      placeholder="e.g. arun@gmail.com"
+                      className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 text-white text-xs placeholder:text-zinc-600 focus:outline-none focus:border-white/30"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-mono text-zinc-400 block mb-1">Phone Number (Optional)</label>
+                    <input
+                      type="tel"
+                      value={authForm.phone}
+                      onChange={(e) => setAuthForm({ ...authForm, phone: e.target.value })}
+                      placeholder="e.g. 98765 43210"
+                      className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 text-white text-xs placeholder:text-zinc-600 focus:outline-none focus:border-white/30"
+                    />
+                  </div>
+
+                  {authError && (
+                    <p className="text-xs text-rose-400 font-semibold">{authError}</p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={isSubmittingAuth}
+                    className="w-full py-2.5 rounded-xl font-black text-xs transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 mt-2 shadow-lg"
+                    style={{
+                      backgroundColor: persona.themeColor,
+                      color: '#000000',
+                    }}
+                  >
+                    {isSubmittingAuth ? (
+                      <span>Connecting Account...</span>
+                    ) : (
+                      <>
+                        <span>Begin 5-Minute Consultation</span>
+                        <ArrowRight className="w-3.5 h-3.5 stroke-[3]" />
+                      </>
+                    )}
+                  </button>
+                </form>
+
+                <p className="text-[9px] text-zinc-500 mt-2.5 font-mono">
+                  🔒 Session &amp; 5-min limit calculated securely in Cloud Firestore.
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* ================= EMPTY STATE: SHORT SUGGESTION BOXES ON LEFT SIDE ONLY (NO TITLE, NO SUBTITLE, NO SERIAL, NO ARROW) ================= */}
-          {messages.length === 0 && (
+          {messages.length === 0 && currentUser && (
             <div className="flex-1 flex flex-col justify-end sm:justify-center items-start px-1 sm:px-2 py-4 my-auto z-10 text-left animate-in fade-in duration-300">
               <div className="w-full max-w-sm space-y-2 text-left">
                 {suggestions.slice(0, 3).map((q, idx) => (
@@ -983,10 +1299,12 @@ export default function PersonaChatExperience({
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                disabled={isLocked && !isPaid}
+                disabled={(!currentUser && !isCheckingAuth) || (isLocked && !isPaid)}
                 placeholder={
-                  isLocked && !isPaid
-                    ? 'Free 5-min session ended. Unlock to chat...'
+                  !currentUser && !isCheckingAuth
+                    ? 'Please enter your name & email above to start...'
+                    : isLocked && !isPaid
+                    ? 'Free 5-minute limit reached on this account. Unlock to chat...'
                     : activeLang === Language.TANGLISH
                     ? `Ask ${persona.name} in Tanglish (e.g. epdi deal pandradhu?)...`
                     : `Ask ${persona.name} for actionable advice or tactics...`
@@ -998,7 +1316,7 @@ export default function PersonaChatExperience({
               <button
                 type="button"
                 onClick={toggleMic}
-                disabled={isLocked && !isPaid}
+                disabled={(!currentUser && !isCheckingAuth) || (isLocked && !isPaid)}
                 className={`absolute right-2 p-1.5 rounded-full transition-all cursor-pointer ${
                   isListening
                     ? 'bg-white text-black animate-pulse'
@@ -1017,7 +1335,7 @@ export default function PersonaChatExperience({
             {/* Send Button */}
             <button
               type="submit"
-              disabled={(!input.trim() && !isLocked) || isLoading}
+              disabled={(!currentUser && !isCheckingAuth) || ((!input.trim() && !isLocked) || isLoading)}
               className={`w-10 h-10 rounded-full flex items-center justify-center text-black shrink-0 shadow-md transition-all active:scale-95 cursor-pointer ${
                 isLocked && !isPaid
                   ? 'bg-zinc-700 text-white'
@@ -1025,7 +1343,7 @@ export default function PersonaChatExperience({
                   ? 'bg-white hover:bg-zinc-200 font-bold'
                   : 'bg-zinc-900 text-zinc-600 border border-zinc-800 cursor-not-allowed'
               }`}
-              title={isLocked && !isPaid ? 'Unlock Session' : 'Send message'}
+              title={!currentUser ? 'Sign in to start' : isLocked && !isPaid ? 'Unlock Session' : 'Send message'}
             >
               {isLocked && !isPaid ? (
                 <Lock className="w-4 h-4 text-white" />

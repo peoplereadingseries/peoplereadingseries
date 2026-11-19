@@ -40,6 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# temp files
+# temp and local data files
 *.tmp*
-data/*.tmp*
+data/
+*.json.tmp*

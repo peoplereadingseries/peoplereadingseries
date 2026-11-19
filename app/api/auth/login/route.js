@@ -24,8 +24,10 @@ export async function POST(req) {
         email: user.email,
         name: user.name,
         phone: user.phone,
-        purchasedBooks: user.purchasedBooks,
+        purchasedBooks: user.purchasedBooks || [],
         activeDeviceInfo: user.activeDeviceInfo,
+        freeChatSecondsRemaining: user.freeChatSecondsRemaining !== undefined ? user.freeChatSecondsRemaining : 300,
+        freeLimitReached: Boolean(user.freeLimitReached || (user.freeChatSecondsRemaining !== undefined && user.freeChatSecondsRemaining <= 0)),
       },
     });
   } catch (error) {

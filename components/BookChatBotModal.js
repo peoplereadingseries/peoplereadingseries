@@ -10,15 +10,18 @@ export default function BookChatBotModal({
   onClose,
   onBuyBook
 }) {
-  // Lock body scroll while modal is open
+  // Lock body scroll and set chat class while modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('chat-modal-open');
     } else {
       document.body.style.overflow = 'unset';
+      document.body.classList.remove('chat-modal-open');
     }
     return () => {
       document.body.style.overflow = 'unset';
+      document.body.classList.remove('chat-modal-open');
     };
   }, [isOpen]);
 
@@ -39,6 +42,7 @@ export default function BookChatBotModal({
     <div
       role="dialog"
       aria-modal="true"
+      data-chatbot-modal="true"
       className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-0 sm:p-3 md:p-6 animate-in fade-in duration-200"
       onClick={(e) => {
         if (e.target === e.currentTarget) {

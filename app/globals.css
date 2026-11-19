@@ -330,3 +330,11 @@ img {
     visibility: hidden !important;
   }
 }
+
+/* Hide WhatsApp widget when Chatbot modal or chat section is active */
+body.chat-modal-open .whatsapp-widget,
+[data-chatbot-modal="true"] ~ .whatsapp-widget {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
